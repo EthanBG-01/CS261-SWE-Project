@@ -1,9 +1,11 @@
 from flask import Flask
 app = Flask(__name__)
 
+# BASIC API: Don't change the main function for now; as currently, it exposes 5001 in the DockerFile, and the compose and nginx config makes use of this port.
+
 @app.route('/')
 def hello_world():
-    return {'API: User' : 'Active'}
+    return {'APIUser' : 'Active'}
 
 @app.route('/test')
 def test():
