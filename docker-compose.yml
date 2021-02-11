@@ -1,0 +1,57 @@
+version: '3.7'
+services:
+
+  proxy-service:
+    image: nginx:1.17.10
+    container_name: nginx_proxy
+    depends_on:
+      - react-client
+      - user
+      - events
+      - feedback
+    volumes:
+      - ./server/proxy-service/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+
+
+  # React App: Front-End Service
+  react-client:
+    image: react-client
+    container_name: react-client
+    build:
+      context: ./react-client
+    depends_on:
+      - user
+      - events
+      - feedback
+    ports:
+      - 3000:80
+    restart: on-failure
+
+  user:
+    image: user
+    container_name: user-service
+    build:
+      context: server/user
+    ports:
+      - 5001:5001
+    restart: on-failure
+
+  events:
+    image: events
+    container_name: event-service
+    build:
+      context: server/event
+    ports:
+      - 5002:5002
+    restart: on-failure
+
+  feedback:
+    image: feedback
+    container_name: feedback-service
+    build:
+      context: server/feedback
+    ports:
+      - 5003:5003
+    restart: on-failure
