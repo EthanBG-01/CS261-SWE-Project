@@ -14,8 +14,16 @@ services:
     ports:
       - 80:80
 
+  user-event-db:
+    image: mysql:5.7
+    ports:
+      - "32000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./server/db:/docker-entrypoint-initdb.d/:ro
 
-  # React App: Front-End Service
+    # React App: Front-End Service
   react-client:
     image: react-client
     container_name: react-client
@@ -37,6 +45,8 @@ services:
     ports:
       - 5001:5001
     restart: on-failure
+    links:
+      - user-event-db
 
   events:
     image: events
@@ -46,6 +56,8 @@ services:
     ports:
       - 5002:5002
     restart: on-failure
+    links:
+      - user-event-db
 
   feedback:
     image: feedback
@@ -55,3 +67,5 @@ services:
     ports:
       - 5003:5003
     restart: on-failure
+    links:
+      - user-event-db
