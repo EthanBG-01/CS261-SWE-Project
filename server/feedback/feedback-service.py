@@ -26,8 +26,6 @@ def get_responses():
 
 ###########################
 # Example adding into mongoDB ~
-@app.route('/feedback', methods=["POST"])
-def add_response():
 
 
 # BASIC API: Don't change the main function for now; as currently, it exposes 5003 in the DockerFile, and the compose and nginx config makes use of this port.
