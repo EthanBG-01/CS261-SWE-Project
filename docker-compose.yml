@@ -14,6 +14,7 @@ services:
     ports:
       - 80:80
 
+  # User and Event related data.
   user-event-db:
     image: mysql:5.7
     ports:
@@ -23,7 +24,21 @@ services:
     volumes:
       - ./server/db:/docker-entrypoint-initdb.d/:ro
 
-    # React App: Front-End Service
+  # Feedback and Analytics related data.
+  feedback-analysis-db:
+    image: mongo:latest
+    container_name: feedback-analysis-db
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: feedback-analytics
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - ./server/m-db/init-db.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    ports:
+      - 27017:27017
+
+  # React App: Front-End Service
   react-client:
     image: react-client
     container_name: react-client
@@ -68,4 +83,4 @@ services:
       - 5003:5003
     restart: on-failure
     links:
-      - user-event-db
+      - feedback-analysis-db
