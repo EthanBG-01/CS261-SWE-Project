@@ -7,6 +7,7 @@ import Main from './components/Main'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
 import Create from './components/Create'
+import Register from './components/Register';
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
             )}
           />
           <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/create" component={Create} />
         </Switch>
