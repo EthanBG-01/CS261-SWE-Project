@@ -28,11 +28,10 @@ def attendeeList():
     connection = mysql.connector.connect(**config)
     cursor = connection.cursor()
     # get event info from database
-    query = "SELECT * FROM event NATURAL JOIN user_event WHERE userid = %s"
+    query = "SELECT * FROM events NATURAL JOIN userevent WHERE userid = %s"
     try:
         cursor.execute(query, (userID, ))
         result = cursor.fetchall()          # list of tuples(rows)
-
         eventDetails = [getEventdetails(event) for event in result]   # I haven't put the "completed: True/False" field because im not sure what that is.
         return jsonify(eventDetails)
 
@@ -43,7 +42,11 @@ def attendeeList():
     connection.close()
 
 def getEventdetails(row):
-    return {'eventName':row[1], 'hostName':row[2], 'startTime':f"{row[7].hour}:{row[7].minute}", 'endTime':f"{row[8].hour}:{row[8].minute}", 'startDate':row[5], 'endDate':row[6]}
+    return {'eventName':row[2], 'hostName':row[3], 'startTime':str(row[8]), 'endTime':str(row[9]), 'startDate':row[6], 'endDate':row[7]}
+
+# @app.route('/hostList', methods=['GET'])
+# def hostList():
+
 
 @app.route('/')
 def hello_world():
