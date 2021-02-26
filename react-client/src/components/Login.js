@@ -11,13 +11,19 @@ constructor(props){
 
  handleClick(event){
    // check if fields are empty, red error message
-    var apiBaseUrl = "http://localhost";
     var self = this;
+
+    // Something's wrong with the states - they're undefined, causing 500 Errors
+
     var payload={
       "email":this.state.email,
-      "password":this.state.password
+      "password":this.state.password,
+        "userType":"host"
     }
-    axios.post(apiBaseUrl+'login', payload).then(function (response) {
+
+    console.log(payload);
+
+    axios.post("http://localhost/user/login", payload).then(function (response) {
       console.log(response);
       if (response.data.code == 200){
         console.log("Login successfull"); // Update context (speak Kirson, userID and authentication token passed in response body)
