@@ -1,12 +1,13 @@
-CREATE DATABASE userEvent CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+CREATE DATABASE userEvent;
 use userEvent;
 
 CREATE TABLE Users (
   userID INT NOT NULL AUTO_INCREMENT,
-  personName VARCHAR(40) NOT NULL,
+  name VARCHAR(40) NOT NULL,
   email VARCHAR(40) NOT NULL,
   passwordHash CHAR(100) NOT NULL,
   passwordSalt CHAR(100) NOT NULL,
+  userType VARCHAR(40) NOT NULL,
   PRIMARY KEY(userID)
 );
 

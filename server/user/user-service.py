@@ -18,14 +18,13 @@ jwt = JWTManager(app)
 
 app.config['JWT_SECRET_KEY'] = "iFPxhXS9QGIk6DWYeWjI4YT_km4Y1B6PfpDABahC1GQ"
 
-
- config = {
-            'user' : 'root',
-            'password' : 'root',
-            'host' : 'user-event-db',
-            'port' : '3306',
-            'database' : 'userEvent'
- }
+config = {
+    'user' : 'root',
+    'password' : 'root',
+    'host' : 'user-event-db',
+    'port' : '3306',
+    'database' : 'userEvent'
+}
 
  # connection = mysql.connector.connect(**config)
 
@@ -264,10 +263,11 @@ def refresh():
 def login():
     newData = request.get_json()            #get dictionary input from front end.
 
+    # FRONTEND - must include; these fields or it causes an internal server error.
+
     email = newData["email"]                # get request.
     password = newData["password"]
     userType = newData["userType"]
-
 
     connection = mysql.connector.connect(**config)      # connect to sql.
 
@@ -298,7 +298,7 @@ def login():
 
         # check password. first we get hash and salt from the database, and then compare it.
         cursor = connection.cursor()
-        getInfoQuery = "SELECT passwordSalt, passwordHash, userID FROM USERS WHERE email = %s AND userType = %s"
+        getInfoQuery = "SELECT passwordSalt, passwordHash, userID FROM Users WHERE email = %s AND userType = %s"
 
         try:
             cursor.execute(getInfoQuery, (email, userType))
