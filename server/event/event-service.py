@@ -33,16 +33,8 @@ def attendeeList():
         cursor.execute(query, (userID, ))
         result = cursor.fetchall()          # list of tuples(rows)
 
-        for row in result:
-            eventName = row[1]
-            hostName = row[2]
-            description = row[3]
-            eventType = row[4]
-            startDate = row[5]
-            endDate = row[6] 
-            startTime = row[7]
-            endTime = row[8]
-            location = row[9]
+        eventDetails = [getEventdetails(event) for event in result]   # I haven't put the "completed: True/False" field because im not sure what that is.
+        return jsonify(eventDetails)
 
     except Exception as e:
         return jsonify({'response': e}), 500
@@ -50,8 +42,8 @@ def attendeeList():
     cursor.close()
     connection.close()
 
-def getEventInfo(row):
-    
+def getEventdetails(row):
+    return {'eventName':row[1], 'hostName':row[2], 'startTime':f"{row[7].hour}:{row[7].minute}", 'endTime':f"{row[8].hour}:{row[8].minute}", 'startDate':row[5], 'endDate':row[6]}
 
 @app.route('/')
 def hello_world():
