@@ -32,19 +32,19 @@ class Register extends Component {
      if (this.state.name.length == 0) {
       console.log("Name cannot be left blank");
       this.setState({nameError: "Name cannot be left blank"});
-      this.setState({faliure: true});
+      return;
     }
 
      if (this.state.email.length == 0) {
        console.log("Email cannot be left blank");
        this.setState({emailError: "Email cannot be left blank"});
-       this.setState({faliure: true});
+       return;
      }
  
      if (this.state.password.length == 0) {
        console.log("Email cannot be left blank");
        this.setState({passwordError: "Password cannot be left blank"});
-       this.setState({faliure: true});
+       return;
      }
 
      if (this.state.faliure == true) {
