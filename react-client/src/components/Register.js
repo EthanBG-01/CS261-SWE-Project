@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+
 class Register extends Component {
+
   constructor(props){
     super(props);
     this.state={
@@ -11,8 +13,7 @@ class Register extends Component {
       nameError:'',
       emailError:'',
       passwordError:'',
-      submitError:'',
-      faliure: false
+      submitError:''
     }
 
     this.handleChangeName = this.handleChangeName.bind(this);
@@ -20,37 +21,40 @@ class Register extends Component {
     this.handleChangePassword = this.handleChangePassword.bind(this);
   }
 
-  async handleClick(event){  // might have to run another instance of react
-     var self = this;
-     var payload={
-       'name':this.state.name,
-       'email':this.state.email,
-       'password':this.state.password,
-       'userType':"host"
-     }
-     console.log(payload);
-     if (this.state.name.length == 0) {
-      console.log("Name cannot be left blank");
+  async register(event){  // might have to run another instance of react
+      let self = this;
+      let returnFlag = false;
+
+      let payload = {
+          'name': this.state.name,
+          'email': this.state.email,
+          'password': this.state.password,
+          'userType': "host"
+      };
+
+     if (this.state.name.length === 0) {
       this.setState({nameError: "Name cannot be left blank"});
-      return;
+      returnFlag = true;
+    } else{
+         this.setState({nameError: ""});
+     }
+
+     if (this.state.email.length === 0) {
+       this.setState({emailError: "Email cannot be left blank"});
+       returnFlag = true;
+     } else{
+         this.setState({emailError: ""});
+     }
+ 
+     if (this.state.password.length === 0) {
+       this.setState({passwordError: "Password cannot be left blank"});
+       returnFlag = true;
+     } else{
+        this.setState({passwordError: ""});
     }
 
-     if (this.state.email.length == 0) {
-       console.log("Email cannot be left blank");
-       this.setState({emailError: "Email cannot be left blank"});
-       return;
-     }
- 
-     if (this.state.password.length == 0) {
-       console.log("Email cannot be left blank");
-       this.setState({passwordError: "Password cannot be left blank"});
-       return;
-     }
+     if (returnFlag) return
 
-     if (this.state.faliure == true) {
-       return;
-     }
- 
      try {
        const result = await axios.post('http://localhost/user/register', {
          'name':this.state.name,
@@ -58,14 +62,18 @@ class Register extends Component {
          'password':this.state.password,
          'userType':"host"
        });
+
        console.log(result);
+
        const user = {
-           access:result.data.Data.access_token,
-           refresh:result.data.Data.refresh_token,
+           access:result.data.access_token,
+           refresh:result.data.refresh_token,
        };
- 
+
+         // Update the user context
+         // Use History to update to the main dashboard.
+
      } catch (e) {
-         console.log(e.response.data.response);
          this.setState({submitError: e.response.data.response}); // weird behaviour where it says data empty but its not
      }};
 
@@ -110,11 +118,12 @@ render() {
            <input
             label="Enter your Password"
             value={this.state.password}
+            type={"password"}
             onChange={this.handleChangePassword}/>
            <br/>
 
            <h1>Register</h1>
-           <button label="Register" primary={true} style={style} onClick={(event) => this.handleClick(event)}/>
+           <button label="Register" primary={true} style={style} onClick={(event) => this.register(event)}>Register</button>
            <br/>
 
            <h1>Already have an account?</h1>

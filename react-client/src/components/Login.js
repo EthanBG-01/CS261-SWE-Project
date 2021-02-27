@@ -9,44 +9,42 @@ constructor(props){
   userType:'host',
   emailError:'',
   passwordError:'',
-  submitError:'',
-  faliure: false
+  submitError:''
   }
 
   this.handleChangeEmail = this.handleChangeEmail.bind(this);
   this.handleChangePassword = this.handleChangePassword.bind(this);
  }
 
- async handleClick(event){  // might have to run another instance of react
-    
-   var self = this;
+ async login(event){  // might have to run another instance of react
+
+    let self = this;
+    let returnFlag = false;
 
     // Something's wrong with the states - they're undefined, causing 500 Errors
 
-    var payload={
+    let payload={
       'email':this.state.email,
       'password':this.state.password,
       'userType':"host"
     }
-    console.log(payload);
-    if (this.state.email.length == 0) {
-      console.log("Email cannot be left blank");
+
+    if (this.state.email.length === 0) {
       this.setState({emailError: "Email cannot be left blank"});
-      return;
+      returnFlag = true;
+    } else{
+        this.setState({emailError: ""});
     }
 
-    if (this.state.password.length == 0) {
-      console.log("Email cannot be left blank");
+    if (this.state.password.length === 0) {
       this.setState({passwordError: "Password cannot be left blank"});
-      return;
+      returnFlag = true;
+    } else{
+        this.setState({passwordError: ""});
     }
 
-    if (this.state.faliure == true) {
-      return;
-    }
-        // History.push 
 
-            // for 500 could say services not available, google what is usually said here on other services
+     if (returnFlag) return;
 
     try {
       const result = await axios.post('http://localhost/user/login', {
@@ -54,10 +52,10 @@ constructor(props){
         'password':this.state.password,
         'userType':"host"
       });
-      console.log(result);
+
       const user = {
-          access:result.data.Data.access_token,
-          refresh:result.data.Data.refresh_token,
+          access:result.data.access_token,
+          refresh:result.data.refresh_token,
       };
 
     } catch (e) {
@@ -97,7 +95,7 @@ render() {
             <br/>
 
             <h1>Login</h1>
-            <button label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)}> Login</button>
+            <button label="Submit" primary={true} style={style} onClick={(event) => this.login(event)}> Login</button>
          </div>
       </div>
     );
