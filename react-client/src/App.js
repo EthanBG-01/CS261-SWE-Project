@@ -12,37 +12,38 @@ import Register from './components/Register';
 
 function App() {
   // consider having completed as one of the state to show where to put what
-  const [events, setEvents] = useState([
-    {
-      id: 1,
-      name: 'Example Event Name',
-      type: 'Session',
-      day: '04/03/2021 15:00',
-    },
-    {
-      id: 2,
-      name: 'Example Coding Project Name',
-      type: 'Coding Project',
-      day: '12/03/2021 13:00',
-    },
-    {
-      id: 1,
-      name: 'Example Coding Project Name',
-      type: 'Coding Project',
-      day: '12/12/2020 11:00',
-    },
-  ])
+  // const [events, setEvents] = useState([
+  //   {
+  //     id: 1,
+  //     name: 'Example Event Name',
+  //     type: 'Session',
+  //     day: '04/03/2021 15:00',
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Example Coding Project Name',
+  //     type: 'Coding Project',
+  //     day: '12/03/2021 13:00',
+  //   },
+  //   {
+  //     id: 1,
+  //     name: 'Example Coding Project Name',
+  //     type: 'Coding Project',
+  //     day: '12/12/2020 11:00',
+  //   },
+  // ])
 
   return (
     <Router>
       <div className="App">
         <Nav />
         <Switch>
-          <Route path="/" exact 
+          {/* <Route path="/" exact 
           render={(props) => (
             <Main  events={events}/>
             )}
-          />
+          /> */}
+          <Route path="/" exact component={Main} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/dashboard" component={Dashboard} />
