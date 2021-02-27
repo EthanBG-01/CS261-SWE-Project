@@ -18,7 +18,11 @@ constructor(props){
  }
 
  async handleClick(event){  // might have to run another instance of react
-    var self = this;
+    
+   var self = this;
+
+    // Something's wrong with the states - they're undefined, causing 500 Errors
+
     var payload={
       'email':this.state.email,
       'password':this.state.password,
@@ -28,20 +32,18 @@ constructor(props){
     if (this.state.email.length == 0) {
       console.log("Email cannot be left blank");
       this.setState({emailError: "Email cannot be left blank"});
-      this.setState({faliure: true});
+      return;
     }
 
     if (this.state.password.length == 0) {
       console.log("Email cannot be left blank");
       this.setState({passwordError: "Password cannot be left blank"});
-      this.setState({faliure: true});
+      return;
     }
 
     if (this.state.faliure == true) {
       return;
     }
-
-     // Update context (speak Kirson, userID and authentication token passed in response body)
         // History.push 
 
             // for 500 could say services not available, google what is usually said here on other services
