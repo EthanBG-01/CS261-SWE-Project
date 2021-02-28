@@ -1,15 +1,18 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom'
 
 import { UserContext } from '../contexts/UserContext'
 import {useHistory} from "react-router-dom";
+
+import "../styles/Login-Reg.css";
 
 export default function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [emailError, setEmailError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
+    const [emailError, setEmailError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
     const [submitError, setSubmitError] = useState('');
 
     const {user, setUser} = useContext(UserContext);
@@ -51,8 +54,10 @@ export default function Login() {
             const user = {
                 access: result.data.access_token,
                 refresh: result.data.refresh_token,
+                login: true,
             };
 
+            console.log("Success");
             setUser({user});
 
             history.push("/");
@@ -65,25 +70,39 @@ export default function Login() {
 
     return (
         <div className={"Login"}>
-            <h1>Welcome! Host</h1>
-            Register here to create events, projects and more to gain real-time feedback from your attendees and team members
-            <br/><p>{submitError}</p><br/>
-            <div>
-                <h1>Email</h1>
-                <p>{emailError}</p><br/>
-                <input value={email} onChange={e=> setEmail(e.target.value)} />
-                <br/>
+            <div className={"bg-image"}></div>
+            <div className={"bg-image2"}></div>
 
-                <h1>Password</h1>
-                <p>{passwordError}</p><br/>
-                <input
-                    type="password"
-                    value={password}
-                    onChange={e=> setPassword(e.target.value)}/>
-                <br/>
+            <div className={"DetailsForm"}>
+                <h3>Welcome To</h3>
+                <div className={"TitleContainer"}>
+                    <div className={"Title"}><h1>RT-Feedback</h1><p>Host</p></div>
+                    Register here to create events, projects and more to gain real-time feedback from your attendees and team members
+                </div>
 
-                <h1>Login</h1>
-                <button onClick={login}> Login</button>
+                <br/><p className={"inputError"}>{submitError}</p><br/>
+
+                <div className={"inputField"}>
+                    <h3>Email</h3>
+                    <p className={"inputError"}>{emailError}</p>
+                    <input value={email} onChange={e=> setEmail(e.target.value)} />
+                </div>
+
+                <div className={"inputField"}>
+                    <h3>Password</h3>
+                    <p className={"inputError"}>{passwordError}</p>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={e=> setPassword(e.target.value)}/>
+                </div>
+
+                <button onClick={login}>LOGIN</button>
+
+                <div className={"redirect"}>
+                    <p>Don't have an Account?</p><Link to='/register'>Register Here</Link>
+                </div>
+
             </div>
         </div>
     );

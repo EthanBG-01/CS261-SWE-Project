@@ -1,8 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import {UserContext} from "../contexts/UserContext";
+import {useHistory} from "react-router-dom";
 
 const Dashboard = () => {
+
+    const {user, setUser} = useContext(UserContext);
+
     // return (
     //     <div>
     //         <h1>This is the Dashboard page</h1>
@@ -10,9 +15,19 @@ const Dashboard = () => {
     //     </div>
     // )
 
+    const history = useHistory();
 
-    const [startDate, setStartDate] = useState(null)
-    console.log(startDate)
+    // This runs as soon as the page loads; if the user isn't logged in, it'll load the login screen.
+    // Uses the context variables to determine if they're logged in.
+    useEffect(() => {
+
+        if (user.user.login === false){
+            console.log("Not logged in.");
+            history.push("/login");
+        }
+    }, []);
+
+        const [startDate, setStartDate] = useState(null);
 
       return (
         <div>  

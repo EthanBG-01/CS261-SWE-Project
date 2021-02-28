@@ -13,14 +13,19 @@ const Nav = () => {
     };
 
     const logout = () => {
-        setUser({undefined});
+        const user = {
+            access: undefined,
+            refresh: undefined,
+            login: false,
+        };
 
+        setUser({user});
         history.push("/login");
     }
 
     return (
         <nav>
-            <h3>Website Name</h3>
+            <h3>RT-Feedback</h3>
             <ul className="nav-links">
                 <Link style={navStyle} to='/dashboard'>
                     <li>Dashboard</li>

@@ -1,0 +1,103 @@
+.Login{
+    background-color: #303030;
+    width:100%;
+    height:100%;
+    overflow: hidden;
+    z-index:20;
+}
+
+.Register{
+    background-color: #303030;
+    width:100%;
+    height:100%;
+    overflow: hidden;
+    z-index:20;
+}
+
+.DetailsForm{
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding:50px;
+    padding-bottom: 50px;
+    z-index:10;
+    -webkit-box-shadow: 5px 5px 5px -2px #acacac;
+    box-shadow: 5px 5px 5px -2px #1a1a1a;
+}
+
+.DetailsForm input {
+    border-radius: 8px;
+    border:none;
+    background-color: #f3f3f3;
+    width:100%;
+    z-index: 10;
+    padding:8px;
+    cursor: text;
+}
+
+@media (min-width:800px) {
+    .DetailsForm {
+        width:40%;
+        margin-top:5%;
+    }
+}
+
+
+@media (min-width:1600px) {
+    .DetailsForm {
+        width:30%;
+        margin-top:10%;
+    }
+}
+
+
+.inputField {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.TitleContainer{
+    text-align: center;
+}
+
+.Title{
+    display: flex;
+    margin-bottom: 12px;
+    justify-content: center;
+}
+
+.DetailsForm button{
+    border-radius: 8px;
+    padding:8px;
+    text-align: center;
+    width:100%;
+    margin-top: 4%;
+    border:none;
+    background-color:#11557C;
+    color:white;
+    font-weight: bold;
+    cursor:pointer;
+}
+
+.inputError{
+    color:red;
+}
+
+.redirect{
+    margin-top:16px;
+}
+
+.redirect p{
+    margin-bottom: 4px;
+}
+
+.bg-image{
+    background-image: url("../assets/city.jpg");
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    width:100%;
+    height:55%;
+    z-index:-1;
+}

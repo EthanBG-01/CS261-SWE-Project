@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useHistory } from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import axios from 'axios';
 
 import { UserContext } from '../contexts/UserContext'
@@ -62,6 +62,7 @@ export default function Register() {
             const user = {
                 access: result.data.access_token,
                 refresh: result.data.refresh_token,
+                login: true,
             };
 
             setUser({user});
@@ -76,43 +77,46 @@ export default function Register() {
 
     return (
         <div className={"Register"}>
-            <h1>Welcome! Host</h1>
-            Register here to create events, projects and more to gain real-time feedback from your atendees and team
-            members
-            <br/>
-            <p>{submitError}</p>
-            <br/>
-            <div>
-                <h1>Name</h1>
-                <p>{nameError}</p>
-                <br/>
-                <input value={name} onChange={e=> setName(e.target.value)}/>
-                <br/>
 
-                <h1>Email</h1>
-                <p>{emailError}</p>
-                <br/>
-                <input
-                    type="email"
-                    onChange={e=> setEmail(e.target.value)}/>
-                <br/>
+            <div className={"bg-image"}></div>
+            <div className={"bg-image2"}></div>
 
-                <h1>Password</h1>
-                <p>{passwordError}</p>
-                <br/>
-                <input
-                    type={"password"}
-                    onChange={e=> setPassword(e.target.value)}/>
-                <br/>
+            <div className={"DetailsForm"}>
+                <h3>Welcome To</h3>
+                <div className={"TitleContainer"}>
+                    <div className={"Title"}><h1>RT-Feedback</h1><p1>Host</p1></div>
+                    Register here to create events, projects and more to gain real-time feedback from your attendees and team members
+                </div>
 
-                <h1>Register</h1>
-                <button onClick={register}>Register
-                </button>
-                <br/>
+                <br/><p  className={"inputError"}>{submitError}</p><br/>
 
-                <h1>Already have an account?</h1>
-                Login here
-                <button>Already have an account? Login here</button>
+                <div className={"inputField"}>
+                    <h3>Name</h3>
+                    <p  className={"inputError"}>{nameError}</p>
+                    <input value={name} onChange={e=> setName(e.target.value)}/>
+                </div>
+
+                <div className={"inputField"}>
+                    <h3>Email</h3>
+                    <p  className={"inputError"}>{emailError}</p>
+                    <input
+                        type="email"
+                        onChange={e=> setEmail(e.target.value)}/>
+                </div>
+
+                <div className={"inputField"}>
+                    <h3>Password</h3>
+                    <p  className={"inputError"}>{passwordError}</p>
+                    <input
+                        type={"password"}
+                        onChange={e=> setPassword(e.target.value)}/>
+                </div>
+
+                <button onClick={register}>REGISTER</button>
+
+                <div className={"redirect"}>
+                    <p>Already have an Account?</p><Link to='/login'>Login Here</Link>
+                </div>
             </div>
         </div>
     );

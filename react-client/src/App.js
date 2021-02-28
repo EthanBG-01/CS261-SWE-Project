@@ -4,36 +4,44 @@ import './style.css';
 
 import { UserContext } from './contexts/UserContext'
 import Nav from './components/Nav'
-import Main from './components/Main'
-import Login from './components/Login'
-import Dashboard from './components/Dashboard'
-import Create from './components/Create'
-import Register from './components/Register';
+import Main from './pages/Main'
+import Login from './pages/Login'
+import Dashboard from './pages/Dashboard'
+import Create from './pages/Create'
+import Register from './pages/Register';
+import {EventContext} from "./contexts/EventContext";
 
 
 function App() {
   const [user, setUser] = useState({
     access: undefined,
     refresh: undefined,
+    login: false,
   });
+
+  const [events, setEvents] = useState ({
+    eventsList: [],
+  })
 
   return (
     <Router>
       <UserContext.Provider value={{ user, setUser }}>
-        <div className="App">
+        <div id="App">
           <Nav />
-          <Switch>
-            {/* <Route path="/" exact 
-            render={(props) => (
-              <Main  events={events}/>
-              )}
-            /> */}
-            <Route path="/" exact component={Main} />
-            <Route path="/login" component={Login} />
-            <Route path="/register" component={Register} />
-            <Route path="/dashboard" component={Dashboard} />
-            <Route path="/create" component={Create} />
-          </Switch>
+          <EventContext.Provider value={{ events, setEvents }}>
+            <Switch>
+              {/* <Route path="/" exact
+              render={(props) => (
+                <Main  events={events}/>
+                )}
+              /> */}
+              <Route path="/" exact component={Main} />
+              <Route path="/login" component={Login} />
+              <Route path="/register" component={Register} />
+              <Route path="/dashboard" component={Dashboard} />
+              <Route path="/create" component={Create} />
+            </Switch>
+          </EventContext.Provider>
         </div>
       </UserContext.Provider>
     </Router>
