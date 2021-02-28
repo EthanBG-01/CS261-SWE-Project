@@ -80,7 +80,7 @@ def validation(name, email, password, userType):
 def doesEmailExist(connection, email, userType):
     try:
         cursor = connection.cursor()
-        cursor.execute("SELECT COUNT(*) FROM USERS WHERE email=(%s)", (email,))
+        cursor.execute("SELECT COUNT(*) FROM Users WHERE email=(%s)", (email,))
         result = cursor.fetchone()
         emailCount = result[0]
         print("emailCount: ", emailCount)
