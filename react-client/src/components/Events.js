@@ -1,13 +1,25 @@
 import Event from './Event'
 
-const Events = ({ events }) => {
+const Events = ({ eventList }) => {
+
+    // Careful with mapping; if its empty, or undefined it'll crash - so make sure to check this!
+
     return (
-        <>
-            {events.map((event) => (
-                <Event key={event.id} event={event} />
-            ))}
-            
-        </>
+        <div>
+            {eventList !== undefined ?
+                eventList.length>0 ?
+                    <>
+                    {eventList.map((event, index) => (
+                        <Event key={index} id={event.id} event={event} />
+                    ))}
+
+                </>
+                : <></>
+                :<></>
+            }
+
+
+        </div>
     )
 }
 
