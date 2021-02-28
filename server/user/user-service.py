@@ -19,7 +19,7 @@ jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = "iFPxhXS9QGIk6DWYeWjI4YT_km4Y1B6PfpDABahC1GQ"
 
 
- config = {
+config = {
             'user' : 'root',
             'password' : 'root',
             'host' : 'user-event-db',

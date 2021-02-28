@@ -47,7 +47,6 @@ def getAttendeeDetails(row):
 @app.route('/hostList', methods=['GET'])
 # returns: eventName 2, eventType 5, startTime 8, startDate 6, live:Boolean, completed:Boolean
 def hostList():
-    #TODO: completed and live field
     request_data = request.get_json(force=True)
     userType = request_data["userType"]
     userID = request_data["userID"]
