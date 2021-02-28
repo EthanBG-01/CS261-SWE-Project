@@ -26,6 +26,7 @@ config = {
     'database' : 'userEvent'
 }
 
+
  # connection = mysql.connector.connect(**config)
 
  # cursor = connection.cursor()
@@ -77,10 +78,9 @@ def validation(name, email, password, userType):
 
 # is email in database.
 def doesEmailExist(connection, email, userType):
-    emailQuery = "SELECT COUNT(*) FROM (SELECT email, userType FROM Users WHERE email=%s and userType=%s) AS d_table"
     try:
         cursor = connection.cursor()
-        cursor.execute(emailQuery, (email, userType))
+        cursor.execute("SELECT COUNT(*) FROM USERS WHERE email=(%s)", (email,))
         result = cursor.fetchone()
         emailCount = result[0]
         print("emailCount: ", emailCount)
@@ -89,7 +89,29 @@ def doesEmailExist(connection, email, userType):
     except Exception as e:
         return jsonify({'response': e}), 500
     cursor.close()
-    return emailCount
+
+
+    emailTypeQuery = "SELECT COUNT(*) FROM (SELECT email, userType FROM Users WHERE email=%s and userType=%s) AS d_table"
+    try:
+        cursor = connection.cursor()
+        cursor.execute(emailTypeQuery, (email, userType))
+        result = cursor.fetchone()
+        emailTypeCount = result[0]
+        print("emailTypeCount: ", emailTypeCount)
+        print("type : ", type(emailTypeCount))
+        connection.commit()
+    except Exception as e:
+        return jsonify({'response': e}), 500
+    cursor.close()
+
+    # if ((emailTypeCount == 0) and emailCount == 1):
+    #     return 2
+
+
+    # emailQuery = "SELECT COUNT(*) FROM USERS WHERE email=%s
+
+
+    return emailCount, emailTypeCount
 
 
 
@@ -133,21 +155,21 @@ def register():
 
 
 
-    # check if email-userType combination exists
+    # check if email exists and if email-userType combination exists.
 
-    emailCount = doesEmailExist(connection, email, userType)
+    emailCount, emailTypeCount = doesEmailExist(connection, email, userType)
 
 
-
+    print("final email count : ", emailCount)
     # register user.
 
 
-    if (emailCount == 1):
+    if (emailCount > 0):
         #email already exists, send back
         connection.close()
         return jsonify({"response": "This email has already been registered."}), 400
 
-    elif (emailCount == 0):
+    else:
         #email doesn't exist, register
         print("users table before: ", selectUsers())
 
@@ -207,7 +229,8 @@ def register():
         connection.close()
 
 
-
+        # accessToken = create_access_token(identity=newUserID, expires_delta = datetime.timedelta(days=15))
+        # accessToken = create_access_token(identity=newUserID, expires_delta = datetime.timedelta(seconds=15))
         accessToken = create_access_token(identity=newUserID, expires_delta = datetime.timedelta(minutes=15))
         refreshToken = create_refresh_token(newUserID)      # maybe expiration?
 
@@ -227,10 +250,10 @@ def register():
 
 
 
-    else:
-        #something has gone wrong, send back an error message.
-        connection.close()
-        return jsonify({'response' : 'Email Invalid. Please try again'}), 500
+    # else:
+    #     #something has gone wrong, send back an error message.
+    #     connection.close()
+    #     return jsonify({'response' : 'Email Invalid. Please try again'}), 500
 
 
 
@@ -278,19 +301,101 @@ def login():
 
     # check if email-userType combination exists
 
-    emailCount = doesEmailExist(connection, email, userType)
+    emailCount, emailTypeCount = doesEmailExist(connection, email, userType)
 
 
     # log in user.
 
 
-    if (emailCount == 0):
+
+
+
+
+    if ((emailCount == 0) and (emailTypeCount == 0)):
         #email doesn't exist, send back
         connection.close()
         return jsonify({"response": "Invalid login. Please try again."}), 400
 
 
-    elif (emailCount == 1):
+
+    if ((emailCount == 1) and (emailTypeCount == 0)):
+        # user has already logged in on website/app, now is trying to login on other for the first time. We treat him as different user in db
+        # so there is a different userID and a different token for each session so we insert his details after checking for
+        # the correct password.
+
+      # SELECT name, passwordSalt, passwordHash FROM USERS WHERE email=?
+        try:
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM USERS WHERE email=(%s)", (email,))
+            result = cursor.fetchall()
+            print("result : ", result)
+            name = result[0][1]
+            passwordHash = result[0][4]
+            saltHex = result[0][5]
+            # print(name)
+            # print(passwordHash)
+            # print(passwordSalt)
+            connection.commit()
+        except Exception as e:
+            return jsonify({'response': e}), 500
+        cursor.close()
+
+    #     # check password
+
+        passwordSalt = password + saltHex
+
+        passwordCheck = check_password_hash(passwordHash, passwordSalt)
+
+        if (passwordCheck == False):
+            # incorrect password : send back
+            connection.close()
+            return jsonify({"response": "Invalid login. Please try again."}), 400
+
+
+
+    #     # if correct, then insert, return tokens.
+        cursor = connection.cursor()
+        insertQuery = "INSERT INTO Users (name,email, userType, passwordSalt, passwordHash) VALUES (%s,%s,%s,%s,%s)"
+
+        try:
+            cursor = connection.cursor()
+            cursor.execute(insertQuery, (name, email, userType, saltHex, passwordHash))
+
+            if cursor.lastrowid:
+                newUserID = cursor.lastrowid
+                print('last insert id', cursor.lastrowid)
+            else:
+                print('last insert id not found')
+
+            connection.commit()
+        except Exception as e:
+            return jsonify({'response': e}), 500
+
+        cursor.close()
+        # connection.close()
+
+        print("users table after: ", selectUsers())
+        print("newUserID", newUserID)
+
+        connection.close()
+
+
+        # accessToken = create_access_token(identity=newUserID, expires_delta = datetime.timedelta(days=15))
+        # accessToken = create_access_token(identity=newUserID, expires_delta = datetime.timedelta(seconds=15))
+        accessToken = create_access_token(identity=newUserID, expires_delta = datetime.timedelta(minutes=15))
+        refreshToken = create_refresh_token(newUserID)      # maybe expiration?
+
+        print("accessToken : ", accessToken)
+        print("refreshToken : ", refreshToken)
+
+
+        return jsonify(access_token=accessToken, refresh_token=refreshToken), 200
+
+
+
+
+
+    if (emailTypeCount == 1):
         #email already exists, log in.
         print("users table before: ", selectUsers())
 
@@ -346,7 +451,10 @@ def login():
             return jsonify({"response": "Invalid login. Please try again."}), 400
 
 
-
+    else:
+        #something has gone wrong, send back an error message.
+        connection.close()
+        return jsonify({'response' : 'Login Invalid. Please try again'}), 500
 
 
 
