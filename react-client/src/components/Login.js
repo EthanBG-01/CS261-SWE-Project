@@ -1,5 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useContext } from 'react';
 import axios from 'axios';
+
+import { UserContext } from '../contexts/UserContext'
+
+
+
 class Login extends Component {
 constructor(props){
   super(props);
@@ -15,7 +20,7 @@ constructor(props){
   this.handleChangeEmail = this.handleChangeEmail.bind(this);
   this.handleChangePassword = this.handleChangePassword.bind(this);
  }
-
+ 
  async login(event){  // might have to run another instance of react
 
     let self = this;
@@ -53,6 +58,11 @@ constructor(props){
         'userType':"host"
       });
 
+      // setUser({
+      //   access: result.data.access_token,
+      //   refresh:result.data.refresh_token,
+      // });
+
       const user = {
           access:result.data.access_token,
           refresh:result.data.refresh_token,
@@ -72,6 +82,7 @@ constructor(props){
     }
     
 render() {
+  // const {setUser} = useContext(UserContext)
     return (
       <div>
         <h1>Welcome! Host</h1>

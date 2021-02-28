@@ -1,5 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useContext } from 'react';
 import axios from 'axios';
+
+import { UserContext } from '../contexts/UserContext'
+
+
 
 class Register extends Component {
 
@@ -65,6 +69,11 @@ class Register extends Component {
 
        console.log(result);
 
+      //  setUser({
+      //   access: result.data.access_token,
+      //   refresh:result.data.refresh_token,
+      //  });
+
        const user = {
            access:result.data.access_token,
            refresh:result.data.refresh_token,
@@ -90,6 +99,7 @@ class Register extends Component {
     }
 
 render() {
+  // const {setUser} = useContext(UserContext)
   return (
     <div>
       <h1>Welcome! Host</h1>
