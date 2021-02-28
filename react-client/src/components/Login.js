@@ -1,118 +1,99 @@
-import React, { Component, useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 
 import { UserContext } from '../contexts/UserContext'
+import {useHistory} from "react-router-dom";
 
+export default function Login() {
 
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [submitError, setSubmitError] = useState('');
 
-class Login extends Component {
-constructor(props){
-  super(props);
-  this.state={
-  email:'',
-  password:'',
-  userType:'host',
-  emailError:'',
-  passwordError:'',
-  submitError:''
-  }
+    const {user, setUser} = useContext(UserContext);
+    const history = useHistory();
 
-  this.handleChangeEmail = this.handleChangeEmail.bind(this);
-  this.handleChangePassword = this.handleChangePassword.bind(this);
- }
- 
- async login(event){  // might have to run another instance of react
+    const login = async () => {
 
-    let self = this;
-    let returnFlag = false;
+        let returnFlag = false;
 
-    // Something's wrong with the states - they're undefined, causing 500 Errors
+        let payload = {
+            'email': email,
+            'password': password,
+            'userType': "host"
+        }
 
-    let payload={
-      'email':this.state.email,
-      'password':this.state.password,
-      'userType':"host"
-    }
+        if (email.length === 0) {
+            setEmailError("Email cannot be left blank");
+            returnFlag = true;
+        } else {
+            setEmailError("");
+        }
 
-    if (this.state.email.length === 0) {
-      this.setState({emailError: "Email cannot be left blank"});
-      returnFlag = true;
-    } else{
-        this.setState({emailError: ""});
-    }
+        if (password.length === 0) {
+            setPasswordError("Password cannot be left blank.");
+            returnFlag = true;
+        } else {
+            setPasswordError("");
+        }
 
-    if (this.state.password.length === 0) {
-      this.setState({passwordError: "Password cannot be left blank"});
-      returnFlag = true;
-    } else{
-        this.setState({passwordError: ""});
-    }
+        if (returnFlag) return;
 
+        try {
+            const result = await axios.post('http://localhost/user/login', {
+                'email': email,
+                'password': password,
+                'userType': "host"
+            });
 
-     if (returnFlag) return;
+            const user = {
+                access: result.data.access_token,
+                refresh: result.data.refresh_token,
+            };
 
-    try {
-      const result = await axios.post('http://localhost/user/login', {
-        'email':this.state.email,
-        'password':this.state.password,
-        'userType':"host"
-      });
+            setUser({user});
 
-      // setUser({
-      //   access: result.data.access_token,
-      //   refresh:result.data.refresh_token,
-      // });
+            history.push("/");
 
-      const user = {
-          access:result.data.access_token,
-          refresh:result.data.refresh_token,
-      };
+        } catch (e) {
+            console.log(e.response.data.response);
+            setSubmitError(e.response.data.response);
+        }
+    };
 
-    } catch (e) {
-        console.log(e.response.data.response);
-        this.setState({submitError: e.response.data.response});
-    }};
-
-    handleChangeEmail(event) {
-      this.setState({email: event.target.value});
-    }
-
-    handleChangePassword(event) {
-      this.setState({password: event.target.value});
-    }
-    
-render() {
-  // const {setUser} = useContext(UserContext)
     return (
-      <div>
-        <h1>Welcome! Host</h1>
-        Register here to create events, projects and more to gain real-time feedback from your attendees and team members
-        <br/><p1>{this.state.submitError}</p1><br/>
-        <div>
-            <h1>Email</h1>
-            <p1>{this.state.emailError}</p1><br/>
-            <input 
-              label="Enter your Email"
-              value={this.state.email}
-              onChange={this.handleChangeEmail} />
-            <br/>
+        <div className={"Login"}>
+            <h1>Welcome! Host</h1>
+            Register here to create events, projects and more to gain real-time feedback from your attendees and team members
+            <br/><p>{submitError}</p><br/>
+            <div>
+                <h1>Email</h1>
+                <p>{emailError}</p><br/>
+                <input value={email} onChange={e=> setEmail(e.target.value)} />
+                <br/>
 
-            <h1>Password</h1>
-            <p1>{this.state.passwordError}</p1><br/>
-            <input
-              type="password"
-              value={this.state.password}
-              onChange={this.handleChangePassword}/>
-            <br/>
+                <h1>Password</h1>
+                <p>{passwordError}</p><br/>
+                <input
+                    type="password"
+                    value={password}
+                    onChange={e=> setPassword(e.target.value)}/>
+                <br/>
 
-            <h1>Login</h1>
-            <button label="Submit" primary={true} style={style} onClick={(event) => this.login(event)}> Login</button>
-         </div>
-      </div>
+                <h1>Login</h1>
+                <button onClick={login}> Login</button>
+            </div>
+        </div>
     );
-  }
 }
-const style = {
- margin: 15,
-};
-export default Login;
+
+
+
+
+
+
+
+ 
+

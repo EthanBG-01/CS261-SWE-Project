@@ -1,150 +1,120 @@
-import React, { Component, useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
+import { useHistory } from "react-router-dom";
 import axios from 'axios';
 
 import { UserContext } from '../contexts/UserContext'
 
+export default function Register() {
 
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [nameError, setNameError] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [submitError, setSubmitError] = useState('');
 
-class Register extends Component {
+    const {user, setUser} = useContext(UserContext);
+    const history = useHistory();
 
-  constructor(props){
-    super(props);
-    this.state={
-      name:'',
-      email:'',
-      password:'',
-      userType:'host',
-      nameError:'',
-      emailError:'',
-      passwordError:'',
-      submitError:''
-    }
+    const register = async () => {
 
-    this.handleChangeName = this.handleChangeName.bind(this);
-    this.handleChangeEmail = this.handleChangeEmail.bind(this);
-    this.handleChangePassword = this.handleChangePassword.bind(this);
-  }
+        let returnFlag = false;
 
-  async register(event){  // might have to run another instance of react
-      let self = this;
-      let returnFlag = false;
+        let payload = {
+            'name': name,
+            'email': email,
+            'password': password,
+            'userType': "host"
+        }
 
-      let payload = {
-          'name': this.state.name,
-          'email': this.state.email,
-          'password': this.state.password,
-          'userType': "host"
-      };
+        if (name === 0) {
+            setNameError("Name cannot be left blank");
+            returnFlag = true;
+        } else{
+            setNameError("");
+        }
 
-     if (this.state.name.length === 0) {
-      this.setState({nameError: "Name cannot be left blank"});
-      returnFlag = true;
-    } else{
-         this.setState({nameError: ""});
-     }
+        if (email.length === 0) {
+            setEmailError("Email cannot be left blank");
+            returnFlag = true;
+        } else {
+            setEmailError("");
+        }
 
-     if (this.state.email.length === 0) {
-       this.setState({emailError: "Email cannot be left blank"});
-       returnFlag = true;
-     } else{
-         this.setState({emailError: ""});
-     }
- 
-     if (this.state.password.length === 0) {
-       this.setState({passwordError: "Password cannot be left blank"});
-       returnFlag = true;
-     } else{
-        this.setState({passwordError: ""});
-    }
+        if (password.length === 0) {
+            setPasswordError("Password cannot be left blank.");
+            returnFlag = true;
+        } else {
+            setPasswordError("");
+        }
 
-     if (returnFlag) return
+        if (returnFlag) return;
 
-     try {
-       const result = await axios.post('http://localhost/user/register', {
-         'name':this.state.name,
-         'email':this.state.email,
-         'password':this.state.password,
-         'userType':"host"
-       });
+        try {
+            const result = await axios.post('http://localhost/user/register', {
+                'name':name,
+                'email':email,
+                'password':password,
+                'userType':"host"
+            });
 
-       console.log(result);
+            const user = {
+                access: result.data.access_token,
+                refresh: result.data.refresh_token,
+            };
 
-      //  setUser({
-      //   access: result.data.access_token,
-      //   refresh:result.data.refresh_token,
-      //  });
+            setUser({user});
 
-       const user = {
-           access:result.data.access_token,
-           refresh:result.data.refresh_token,
-       };
+            history.push("/");
 
-         // Update the user context
-         // Use History to update to the main dashboard.
+        } catch (e) {
+            console.log(e.response.data.response);
+            setSubmitError(e.response.data.response);
+        }
+    };
 
-     } catch (e) {
-         this.setState({submitError: e.response.data.response}); // weird behaviour where it says data empty but its not
-     }};
+    return (
+        <div className={"Register"}>
+            <h1>Welcome! Host</h1>
+            Register here to create events, projects and more to gain real-time feedback from your atendees and team
+            members
+            <br/>
+            <p>{submitError}</p>
+            <br/>
+            <div>
+                <h1>Name</h1>
+                <p>{nameError}</p>
+                <br/>
+                <input value={name} onChange={e=> setName(e.target.value)}/>
+                <br/>
 
-     handleChangeName(event) {
-      this.setState({name: event.target.value});
-    }
+                <h1>Email</h1>
+                <p>{emailError}</p>
+                <br/>
+                <input
+                    type="email"
+                    onChange={e=> setEmail(e.target.value)}/>
+                <br/>
 
-     handleChangeEmail(event) {
-      this.setState({email: event.target.value});
-    }
+                <h1>Password</h1>
+                <p>{passwordError}</p>
+                <br/>
+                <input
+                    type={"password"}
+                    onChange={e=> setPassword(e.target.value)}/>
+                <br/>
 
-    handleChangePassword(event) {
-      this.setState({password: event.target.value});
-    }
+                <h1>Register</h1>
+                <button onClick={register}>Register
+                </button>
+                <br/>
 
-render() {
-  // const {setUser} = useContext(UserContext)
-  return (
-    <div>
-      <h1>Welcome! Host</h1>
-      Register here to create events, projects and more to gain real-time feedback from your atendees and team members
-      <br/><p1>{this.state.submitError}</p1><br/>
-      <div>
-          <h1>Name</h1>
-          <p1>{this.state.nameError}</p1><br/>
-          <input
-            label="Enter your First Name"
-            value={this.state.name}
-            onChange={this.handleChangeName}/>
-           <br/>
-
-           <h1>Email</h1>
-           <p1>{this.state.emailError}</p1><br/>
-           <input
-             label="Enter your Email"
-             type="email"
-             value={this.state.email}
-             onChange={this.handleChangeEmail}/>
-           <br/>
-
-           <h1>Password</h1>
-           <p1>{this.state.passwordError}</p1><br/>
-           <input
-            label="Enter your Password"
-            value={this.state.password}
-            type={"password"}
-            onChange={this.handleChangePassword}/>
-           <br/>
-
-           <h1>Register</h1>
-           <button label="Register" primary={true} style={style} onClick={(event) => this.register(event)}>Register</button>
-           <br/>
-
-           <h1>Already have an account?</h1>
-           Login here
-           <button onclick="window.location.href='/Login'">Already have an account? Login here</button>
-          </div>
-      </div>
+                <h1>Already have an account?</h1>
+                Login here
+                <button>Already have an account? Login here</button>
+            </div>
+        </div>
     );
-  }
 }
-const style = {
-  margin: 15,
-};
-export default Register;
+
