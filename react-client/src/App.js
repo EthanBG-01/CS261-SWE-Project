@@ -35,8 +35,8 @@ function App() {
                 <Main  events={events}/>
                 )}
               /> */}
-              <Route path="/" exact component={Main} />
               <Route path="/login" component={Login} />
+              <Route path="/" exact component={Main} />
               <Route path="/register" component={Register} />
               <Route path="/dashboard" component={Dashboard} />
               <Route path="/create" component={Create} />
