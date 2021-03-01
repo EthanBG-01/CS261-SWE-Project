@@ -7,7 +7,6 @@ CREATE TABLE Users (
   email VARCHAR(40) NOT NULL,
   passwordHash CHAR(100) NOT NULL,
   passwordSalt CHAR(100) NOT NULL,
-  userType VARCHAR(40) NOT NULL,
   PRIMARY KEY(userID)
 );
 
