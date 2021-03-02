@@ -51,7 +51,7 @@ function Main() {
             },
         ]
 
-        setEvents(eventsList);
+        setEvents({eventsList:eventsList, activeEvent:undefined});
         console.log(events);
 
 
@@ -73,7 +73,7 @@ function Main() {
                   <h4>DATE/TIME</h4>
               </div>
             </div>
-            <Events eventList={events}/>
+            <Events eventList={events.eventsList}/>
         </div>
         <div className="eventList">
           <h4>Completed Events</h4>
