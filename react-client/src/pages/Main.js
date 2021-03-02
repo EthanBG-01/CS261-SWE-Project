@@ -16,6 +16,8 @@ function Main() {
 
   const history = useHistory();
 
+  const onClick = () => {history.push("/create")}
+
     // This runs as soon as the page loads; if the user isn't logged in, it'll load the login screen.
     // Uses the context variables to determine if they're logged in.
     useEffect(() => {
@@ -57,7 +59,7 @@ function Main() {
   
   return (
     <div className="Main">
-      <Header title='Your Events' color='pink' text='Create Event' />
+      <Header title='Your Events' color='pink' text='Create Event' onClick={onClick} />
       <div className="mainBody">
         <div className="eventList">
             <div className="listTitle">
