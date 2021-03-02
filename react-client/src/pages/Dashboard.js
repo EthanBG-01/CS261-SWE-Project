@@ -3,11 +3,12 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import {UserContext} from "../contexts/UserContext";
 import {useHistory} from "react-router-dom";
+import {EventContext} from "../contexts/EventContext";
 
 const Dashboard = () => {
 
     const {user, setUser} = useContext(UserContext);
-
+    const {events} = useContext(EventContext);
     // return (
     //     <div>
     //         <h1>This is the Dashboard page</h1>
@@ -25,6 +26,11 @@ const Dashboard = () => {
             console.log("Not logged in.");
             history.push("/login");
         }
+
+        // TODO: THIS IS THE ACTIVE EVENT: USE THIS VARIABLE TO CALL THE API!
+        console.log(events.activeEvent);
+
+
     }, []);
 
         const [startDate, setStartDate] = useState(null);

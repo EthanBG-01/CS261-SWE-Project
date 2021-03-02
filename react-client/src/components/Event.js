@@ -1,6 +1,21 @@
+import React, { useState, useContext } from 'react';
 import Button from './Button'
+import {EventContext} from "../contexts/EventContext";
+
+import {useHistory} from "react-router-dom";
 
 const Event = ({ event }) => {
+    const [eventID] = useState(event.id)
+    const {events, setEvents} = useContext(EventContext);
+
+    const history = useHistory();
+
+    const handle = () =>{
+        console.log("handling click", eventID);
+        setEvents({...events, activeEvent: eventID});
+        history.push("/dashboard");
+    }
+
     return (
         <div className='event'>
             <div className='box'>
@@ -14,7 +29,7 @@ const Event = ({ event }) => {
             </div>
             <div className='btnbox'>
                 <Button color='grey' text='Edit' />     
-                <Button color='grey' text='Show Feedback' />
+                <Button color='grey' text='Show Feedback' onClick={handle} />
             </div>
         </div>
     )
