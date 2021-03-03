@@ -9,6 +9,29 @@ CREATE TABLE Users (
   passwordSalt CHAR(100) NOT NULL,
   PRIMARY KEY(userID)
 );
+CREATE TABLE Events (
+	eventID INT NOT NULL AUTO_INCREMENT,
+	eventCode INT NOT NULL,
+	eventName VARCHAR(40) NOT NULL,
+	hostName VARCHAR(40) NOT NULL,
+	description VARCHAR(1000) NOT NULL,
+	eventType VARCHAR(40) NOT NULL,
+	startDate DATE NOT NULL,
+	endDate DATE NOT NULL,
+	startTime TIME NOT NULL,
+	endTime TIME NOT NULL,
+	parentID INT,
+	PRIMARY KEY(eventID)
+);
+
+CREATE TABLE UserEvents (
+	userID INT NOT NULL,
+	eventID INT NOT NULL,
+	userType VARCHAR(40) NOT NULL,
+	PRIMARY KEY (userID, eventID),
+	FOREIGN KEY (userID) REFERENCES Users(userID),
+	FOREIGN KEY (eventID) REFERENCES Events(eventID)
+);
 
 -- Obviously, we don't want to store passwords in plain-text!
 
