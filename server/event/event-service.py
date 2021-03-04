@@ -72,7 +72,7 @@ def attendeeList():
 
 	connection = mysql.connector.connect(**config)
 	cursor = connection.cursor()
-	selectQuery = "SELECT * FROM EVENTS NATURAL JOIN USEREVENTS WHERE userID =%s AND userType=%s"
+	selectQuery = "SELECT * FROM Events NATURAL JOIN UserEvents WHERE userID =%s AND userType=%s"
 	try:
 		cursor.execute(selectQuery, (userID, "attendee"))
 		result = cursor.fetchall()
@@ -317,7 +317,7 @@ def hostList():
 
 	connection = mysql.connector.connect(**config)
 	cursor = connection.cursor()
-	selectQuery = "SELECT * FROM EVENTS NATURAL JOIN USEREVENTS WHERE userID =%s AND userType=%s"
+	selectQuery = "SELECT * FROM Events NATURAL JOIN UserEvents WHERE userID =%s AND userType=%s"
 	try:
 		cursor.execute(selectQuery, (userID, "host"))
 		result = cursor.fetchall()
@@ -455,7 +455,7 @@ def createEvent():
 
 		try:
 			cursor = connection.cursor()
-			cursor.execute("SELECT COUNT(*) FROM EVENTS WHERE eventCode=(%s)", (eventCode,))
+			cursor.execute("SELECT COUNT(*) FROM Events WHERE eventCode=(%s)", (eventCode,))
 			result = cursor.fetchone()
 			eventCodeCount = result[0]
 			print("eventCodeCount: ", eventCodeCount)
@@ -533,7 +533,7 @@ def createEvent():
 		cursor.close()
 		# parentID of first session should be the first eventID of this session.
 
-		insertParentID = "UPDATE EVENTS SET parentID=%s WHERE eventID=%s"
+		insertParentID = "UPDATE Events SET parentID=%s WHERE eventID=%s"
 		try:
 			cursor = connection.cursor()
 			cursor.execute(insertParentID, (firstEventID,firstEventID))
@@ -609,7 +609,7 @@ def createEvent():
 		# insert into user-events!!
 		# this user has created this event.
 
-		insertQuery = "INSERT INTO USEREVENTS (userID, eventID, userType) VALUES (%s,%s, %s)"
+		insertQuery = "INSERT INTO UserEvents (userID, eventID, userType) VALUES (%s,%s, %s)"
 		try:
 			cursor = connection.cursor()
 			cursor.execute(insertQuery, (userID, newEventID, "host"))
@@ -642,7 +642,7 @@ def joinEvent():
 	connection = mysql.connector.connect(**config)
 	try:
 		cursor = connection.cursor()
-		cursor.execute("SELECT eventID, eventName, hostName, startDate, endDate, startTime, endTime, parentID FROM EVENTS WHERE eventCode=(%s)", (eventCode,))
+		cursor.execute("SELECT eventID, eventName, hostName, startDate, endDate, startTime, endTime, parentID FROM Events WHERE eventCode=(%s)", (eventCode,))
 		result = cursor.fetchall()
 		if not result:
 			# event not found
@@ -705,7 +705,7 @@ def joinEvent():
 
 		# check if user has either already joined the event or if the user is trying to join their own event.
 		# print("here")
-		selectUserEvents = "SELECT userType FROM USEREVENTS WHERE userID=%s AND eventID=%s"
+		selectUserEvents = "SELECT userType FROM UserEvents WHERE userID=%s AND eventID=%s"
 		try:
 			cursor = connection.cursor()
 			print("userID : ", userID)
@@ -716,7 +716,7 @@ def joinEvent():
 			if not userTypeResult:
 				# this means that user can join the event.
 				# insert into userEvents now - this user has joined this event.
-				insertQuery = "INSERT INTO USEREVENTS (userID, eventID, userType) VALUES (%s,%s,%s)"
+				insertQuery = "INSERT INTO UserEvents (userID, eventID, userType) VALUES (%s,%s,%s)"
 				try:
 					cursor = connection.cursor()
 					print("userID : ", userID)
@@ -770,7 +770,7 @@ def joinEvent():
 			return jsonify({"response" : "Cannot join Event. Event has been completed"}), 400
 
 
-		selectUserEvents = "SELECT userType FROM USEREVENTS WHERE userID=%s AND eventID=%s"
+		selectUserEvents = "SELECT userType FROM UserEvents WHERE userID=%s AND eventID=%s"
 		try:
 			cursor = connection.cursor()
 			print("userID 2 : ", userID)
@@ -807,7 +807,7 @@ def insertIntoUserEvents(result, userID, connection):
 	# print("insertintouserevents")
 	# print("result : ", result)
 	print("userID : ", userID)
-	insertQuery = "INSERT INTO USEREVENTS (userID, eventID, userType) VALUES (%s,%s,%s)"
+	insertQuery = "INSERT INTO UserEvents (userID, eventID, userType) VALUES (%s,%s,%s)"
 	# print("1")
 	for res in result:
 		print("res : ", res)
@@ -858,7 +858,7 @@ def joinEventGuest():
 	connection = mysql.connector.connect(**config)
 	try:
 		cursor = connection.cursor()
-		cursor.execute("SELECT eventID, eventName, hostName, startDate, endDate, startTime, endTime, parentID FROM EVENTS WHERE eventCode=(%s)", (eventCode,))
+		cursor.execute("SELECT eventID, eventName, hostName, startDate, endDate, startTime, endTime, parentID FROM Events WHERE eventCode=(%s)", (eventCode,))
 		result = cursor.fetchall()
 		if not result:
 			# event not found
