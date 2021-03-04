@@ -219,7 +219,7 @@ def register():
 
 
 
-        return jsonify(access_token=accessToken, refresh_token=refreshToken, response="Welcome "+name+"!"), 200
+        return jsonify(access_token=accessToken, refresh_token=refreshToken, response=name), 200
 
 
 
@@ -335,7 +335,7 @@ def login():
 
             print("accessToken : ", accessToken)
             print("refreshToken : ", refreshToken)
-            return jsonify(access_token=accessToken, refresh_token=refreshToken, response="Welcome back "+name+"!"), 200
+            return jsonify(access_token=accessToken, refresh_token=refreshToken, response=name), 200
 
 
         else:
