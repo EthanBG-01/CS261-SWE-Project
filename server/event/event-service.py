@@ -848,7 +848,7 @@ def insertIntoUserEvents(result, userID, connection):
 
 
 
-@app.route('/join-event-guest', methods=["GET"])
+@app.route('/join-event-guest', methods=["POST"])
 def joinEventGuest():
 	# return event id if event is live. still have to do shenanigans.
 	newData = request.get_json()
@@ -863,7 +863,7 @@ def joinEventGuest():
 		if not result:
 			# event not found
 			connection.close()
-			return jsonify({"response" : "event not found"}), 400
+			return jsonify({"response" : "Event not found"}), 400
 	except Exception as e:
 		return jsonify({"response" : e}), 500
 	cursor.close()
@@ -897,16 +897,16 @@ def joinEventGuest():
 		print("result[0] : ", result[0])
 		live, eventID = checkLive(result[0], currentTime, today)
 		if (live == True):
-			return jsonify({"response" : "event found", "eventID" : eventID}), 200
+			return jsonify({"response" : "Event found", "eventID" : eventID}), 200
 		else:
-			return jsonify({"response" : "event not live"}), 400
+			return jsonify({"response" : "Event not live"}), 400
 	if (multipleSession):
 		for session in result:
 			print("session : ", session)
 			live, eventID = checkLive(session, currentTime, today)
 			if (live == True):
-				return jsonify({"response" : "event found", "eventID" : eventID}), 200
-		return jsonify({"response" : "event not live"}), 400
+				return jsonify({"response" : "Event found", "eventID" : eventID}), 200
+		return jsonify({"response" : "Event not live"}), 400
 
 
 

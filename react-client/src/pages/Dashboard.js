@@ -5,6 +5,8 @@ import {UserContext} from "../contexts/UserContext";
 import {useHistory} from "react-router-dom";
 import {EventContext} from "../contexts/EventContext";
 
+import "../styles/Dashboard.css";
+
 const Dashboard = () => {
 
     const {user, setUser} = useContext(UserContext);
@@ -22,7 +24,7 @@ const Dashboard = () => {
     // Uses the context variables to determine if they're logged in.
     useEffect(() => {
 
-        if (user.user.login === false){
+        if (user.login === false){
             console.log("Not logged in.");
             history.push("/login");
         }

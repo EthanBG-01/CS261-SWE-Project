@@ -1,0 +1,63 @@
+.Main{
+    flex:1;
+    display:flex;
+    flex-direction: column;
+}
+
+.mainBody {
+    padding-left:10%;
+    padding-right:10%;
+    padding-top:4px;
+    flex:1;
+    background-color: #f1f1f1;
+    font-family: Roboto;
+    overflow: scroll;
+}
+
+.listTitlePadding{
+    padding-left:10%;
+    padding-right:10%;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.header{
+    padding-left:10%;
+    padding-right:10%;
+}
+
+.listTitle {
+    font-family: Roboto;
+    color: #292929;
+    display: flex;
+    overflow: auto;
+    min-height: 10px;
+    align-items: center;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: white;
+}
+
+.selectFilter{
+    padding:8px;
+}
+
+.listTitle h4{
+    font-weight: 500;
+    font-size: 14px;
+}
+
+
+.create{
+    background-color: #f3f3f3;
+    border:0px;
+    padding:10px;
+    border-radius: 6px;
+}
+
+.box {
+    flex:2;
+}
+
+.buttonTitle{
+    flex:1;
+}
