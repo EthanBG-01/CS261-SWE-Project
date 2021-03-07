@@ -59,13 +59,16 @@ export default function Register() {
                 'userType':"host"
             });
 
-            const user = {
+            console.log(result);
+
+            const userObject = {
                 access: result.data.access_token,
                 refresh: result.data.refresh_token,
                 login: true,
+                name: result.data.response,
             };
 
-            setUser({user});
+            setUser(userObject);
 
             history.push("/");
 
@@ -84,8 +87,8 @@ export default function Register() {
             <div className={"DetailsForm"}>
                 <h3>Welcome To</h3>
                 <div className={"TitleContainer"}>
-                    <div className={"Title"}><h1>RT-Feedback</h1><p1>Host</p1></div>
-                    Register here to create events, projects and more to gain real-time feedback from your attendees and team members
+                    <div className={"Title"}><h1>RT-Feedback</h1><p>Host</p></div>
+                    <p>Register here to create events, projects and more to gain real-time feedback from your attendees and team members</p>
                 </div>
 
                 <br/><p  className={"inputError"}>{submitError}</p><br/>
