@@ -4,6 +4,7 @@
     height:100%;
     overflow: hidden;
     z-index:20;
+    font-family: Roboto;
 }
 
 .Register{
@@ -12,6 +13,7 @@
     height:100%;
     overflow: hidden;
     z-index:20;
+    font-family: Roboto;
 }
 
 .DetailsForm{
