@@ -76,6 +76,31 @@ body > #root > div {
    width: 12%;
 }
 
+.numbox{
+    display: flex;
+    width: 4%;
+}
+
+.textbox{
+    display: flex;
+    width: 26%;
+}
+
+.typebox{
+    display: flex;
+    width: 15%;
+}
+
+.resbox{
+    display: flex;
+    width: 51%;
+}
+
+.removebox{
+    display: flex;
+    width: 5%;
+}
+
 nav {
     display: flex;
     justify-content: space-around;
