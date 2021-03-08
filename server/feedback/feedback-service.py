@@ -27,7 +27,7 @@ db = client["feedback-analytics"]
 
 
 
-
+#IGNORE
 # {
 #     "eventID" : [1,2,3],
 #     "data" : [
@@ -64,6 +64,10 @@ db = client["feedback-analytics"]
 
 #     ]
 # }
+
+
+
+# {"eventID" : 6}
 
 
 @app.route('/get-questions', methods=["GET"])
@@ -224,7 +228,7 @@ def postCreateEvent():
 	events = db.events
 	questions = db.questions
 	templates = db.templates
-	analysis = db.initAnalysis
+	analysis = db.analysis
 
 	newData = request.get_json()
 
@@ -512,7 +516,7 @@ def storeFeedback():
 	eventID = newData["eventID"]
 
 
-	analysis = db.initAnalysis
+	analysis = db.analysis
 	feedback = db.feedback
 	questions = db.questions
 
@@ -793,7 +797,7 @@ def getMood(results):
 def viewFeedback():
 	# host can view the feedback and analysis.
 	# analysis - get all the analysis results and convert the emotions to moods before returning.
-	analysis = db.initAnalysis
+	analysis = db.analysis
 	feedback = db.feedback
 
 	newData = request.get_json()
@@ -982,8 +986,6 @@ def getTemplate():
 	client.close()
 
 	return jsonify(response=returnArray), 200
-
-
 
 def modelInit():
 	global modelInit
