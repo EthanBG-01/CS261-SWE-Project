@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import {UserContext} from "../contexts/UserContext";
 import {EventContext} from "../contexts/EventContext";
 import {useHistory} from "react-router-dom";
-<<<<<<< HEAD
+
 import { BarChart, Bar, LabelList, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label} from 'recharts';
 
 
@@ -194,7 +194,6 @@ const Dashboard = () => {
 
 
     }, []);
->>>>>>> 2beacecc6e5a19d53415e94aed357b57a96fdf7d
 
     const [startDate, setStartDate] = useState(null);
 
