@@ -51,14 +51,15 @@ export default function Login() {
                 'userType': "host"
             });
 
-            const user = {
+            const userObject = {
                 access: result.data.access_token,
                 refresh: result.data.refresh_token,
                 login: true,
+                name: result.data.response,
             };
 
             console.log("Success");
-            setUser({user});
+            setUser(userObject);
 
             history.push("/");
 

@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web');
+
+.header {
+    font-family: Titillium Web;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 20vh;
+    color:white;
+    background: rgb(36,82,149);
+    background: linear-gradient(62deg, rgba(36,82,149,.8) 0%, rgba(1,43,80,.8) 0%), url("../assets/city.jpg");
+    background-position: 0px -600px;
+    background-size: cover;
+}
+
+.header h2{
+    font-size: 42px;
+}
+
+.header p{
+    font-size:20px;
+}

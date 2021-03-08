@@ -4,6 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import {UserContext} from "../contexts/UserContext";
 import {EventContext} from "../contexts/EventContext";
 import {useHistory} from "react-router-dom";
+<<<<<<< HEAD
 import { BarChart, Bar, LabelList, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label} from 'recharts';
 
 
@@ -146,13 +147,13 @@ export function TextChartContainer({title, responses}) {
  
 }
 
-
-
 const Dashboard = () => {
     const finalHtml = []
 
     const {user, setUser} = useContext(UserContext);
+
     const {events, setEvents} = useContext(EventContext);
+
 
     // return (
     //     <div>
@@ -165,6 +166,7 @@ const Dashboard = () => {
 
     // This runs as soon as the page loads; if the user isn't logged in, it'll load the login screen.
     // Uses the context variables to determine if they're logged in.
+
     /*useEffect(() => {
         // will have to get json data here
         if (user.user.login === false){
@@ -179,6 +181,20 @@ const Dashboard = () => {
     {'questionID': 9, 'questionTitle': 'blah blah blah?', 'questionType': 'discrete', 'data': {'categories': {'not motivated': 0, 'slightly motivated': 1, 'highly motivated': 0}}},
     {'questionID': 17, 'questionTitle': 'What is your role in the project?', 'questionType': 'text-no-sentiment', 'data': {'Responses': [['Bob', 'I am watching, dude'], ['Bob', 'I am watching, dude']]}},
     {'questionID': 7, 'questionTitle': 'Can you please provide a few reasons why?', 'questionType': 'text-sentiment', 'data': {"emotions" : {"sadness" : 0, "tired": 1, "angry" : 2}}}]
+
+    useEffect(() => {
+
+        if (user.login === false){
+            console.log("Not logged in.");
+            history.push("/login");
+        }
+
+        // TODO: THIS IS THE ACTIVE EVENT: USE THIS VARIABLE TO CALL THE API!
+        console.log(events.activeEvent);
+
+
+    }, []);
+>>>>>>> 2beacecc6e5a19d53415e94aed357b57a96fdf7d
 
     const [startDate, setStartDate] = useState(null);
 
