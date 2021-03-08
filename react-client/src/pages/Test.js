@@ -6,7 +6,6 @@ import {UserContext} from "../contexts/UserContext";
 import {useHistory} from "react-router-dom";
 
 import Header from '../components/Header'
-import Events from '../components/Events'
 import Button from '../components/Button'
 import Question from '../components/Question'
 

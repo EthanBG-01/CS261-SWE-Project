@@ -1,5 +1,4 @@
 * {
-    font-family: Roboto;
     margin:0;
     box-sizing: border-box;
 }
@@ -13,68 +12,7 @@ body > #root > div {
     flex-direction: column;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 3px;
-    min-height: 15vh;
-    background: aquamarine;
-}
 
-.btn {
-    display: inline-block;
-    background: #000;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 15px;
-    font-family: inherit;
-}
-
-.btn:focus {
-    outline: none;
-}
-
-.btn:active {
-    transform: scale(0.98);
-}
-
-.btn-block {
-    display: block;
-    width: 100%;
-}
-
-.event {
-    display: flex;
-    margin: 5px auto;
-    overflow: auto;
-    min-height: 60px;
-    border: 1px solid steelblue;
-    padding: 10px;
-    border-radius: 10px;
-}
-
-.listTitle {
-    color:teal;
-    display: flex;
-    overflow: auto;
-    min-height: 10px;
-}
-
-.box{
-    display: flex;
-    width: 29%;
-}
-
-.btnbox{
-   display: flex;
-   width: 12%;
-}
 
 .numbox{
     display: flex;
@@ -103,11 +41,17 @@ body > #root > div {
 
 nav {
     display: flex;
-    justify-content: space-around;
+    font-family: Roboto;
+    justify-content: space-between;
+    padding-left:10%;
+    padding-right:10%;
     align-items: center;
     min-height: 6vh;
-    background: #303030;
+    background: #1d1d1d;
     color: white;
+    -webkit-box-shadow: 5px 5px 8px -3px rgba(29, 29, 29, 0.69);
+    box-shadow: 5px 5px 8px -3px rgba(17, 17, 17, 0.69);
+    z-index: 20;
 }
 
 .nav-links {

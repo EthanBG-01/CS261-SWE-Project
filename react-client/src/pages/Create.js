@@ -2,7 +2,8 @@ import { useState, useEffect, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import Header from '../components/Header'
-import Events from '../components/Events'
+
+import "../styles/Create.css";
 
 import {UserContext} from "../contexts/UserContext";
 
@@ -21,7 +22,7 @@ const Create = () => {
     // This runs as soon as the page loads; if the user isn't logged in, it'll load the login screen.
     // Uses the context variables to determine if they're logged in.
     useEffect(() => {
-        if (user.user.login === false){
+        if (user.login === false){
             history.push("/login");
         }
         // Use an API call to fetch all the hosts' events and update the event context.
