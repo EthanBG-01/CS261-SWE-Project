@@ -255,7 +255,7 @@ def multiSessions(multipleSessionList, status):
 
 		if (nextSession is None):
 			# attendee list : event is completed.
-			multiDict = {"eventName" : eventCopy[len(eventCopy) - 1][2], "hostName":eventCopy[len(eventCopy)-1][3], "description":eventCopy[len(eventCopy)-1][4], "eventType" : eventCopy[len(eventCopy) - 1][5], "startTime" : str(eventCopy[len(eventCopy) - 1][8]), "startDate" : str(eventCopy[len(eventCopy) - 1][6]), "endTime" : str(eventCopy[len(eventCopy) - 1][9]), "endDate" : str(eventCopy[len(eventCopy) - 1][7]), "live" : live, "completed" : completed, "eventCode" : eventCopy[len(eventCopy) - 1][1], "eventID" : eventIDList}
+			multiDict = {"eventName" : eventCopy[len(eventCopy) - 1][2], "hostName" : eventCopy[len(eventCopy) - 1][3], "description" : eventCopy[len(eventCopy) - 1][4], "eventType" : eventCopy[len(eventCopy) - 1][5], "startTime" : str(eventCopy[len(eventCopy) - 1][8]), "startDate" : str(eventCopy[len(eventCopy) - 1][6]), "endTime" : str(eventCopy[len(eventCopy) - 1][9]), "endDate" : str(eventCopy[len(eventCopy) - 1][7]), "live" : live, "completed" : completed, "eventCode" : eventCopy[len(eventCopy) - 1][1], "eventID" : eventIDList}
 			# print("hheya")
 			# print(eventCopy[len(eventCopy) - 1])
 			print("\n")
@@ -264,7 +264,7 @@ def multiSessions(multipleSessionList, status):
 
 		else:
 
-			multiDict = {"eventName" : nextSession[2], "hostName":nextSession[3], "description":nextSession[4], "eventType" : nextSession[5], "startTime" : startTimeList, "startDate" : startDateList, "endTime" : endTimeList, "endDate" : endDateList, "live" : live, "completed" : completed, "eventCode" : nextSession[1], "eventID" : eventIDList}
+			multiDict = {"eventName" : nextSession[2], "hostName" : nextSession[3], "description" : nextSession[4], "eventType" : nextSession[5], "startTime" : startTimeList, "startDate" : startDateList, "endTime" : endTimeList, "endDate" : endDateList, "live" : live, "completed" : completed, "eventCode" : nextSession[1], "eventID" : eventIDList}
 			print("\n")
 			print("multiDict : ", multiDict)
 		returnMultiArray.append(multiDict)
