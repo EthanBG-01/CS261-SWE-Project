@@ -12,8 +12,6 @@ body > #root > div {
     flex-direction: column;
 }
 
-
-
 .numbox{
     display: flex;
     width: 4%;

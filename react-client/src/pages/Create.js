@@ -206,7 +206,7 @@ const Create = () => {
 
     return (
         <div className="Main">
-            <Header title='Create Events' color='blue' text='Save Event' />
+            <Header title='Create Events' color='blue' text='Save Event' name={user.name} />
 
             <div className="listTitlePadding">
                 <div className="listTitle">

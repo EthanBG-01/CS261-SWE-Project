@@ -4,7 +4,7 @@ import { Link, useHistory } from 'react-router-dom'
 
 import "../styles/Header.css";
 
-const Header = ({ title, color, text, name, onClick }) => {
+const Header = ({ title, color, text, name, button, onClick }) => {
     const history = useHistory()
     // clickFunc = () => {history.push("/create")}
     
@@ -19,8 +19,12 @@ const Header = ({ title, color, text, name, onClick }) => {
 
 
             {/* <h4>Welcome back Host Name</h4>  try para*/}
-            <Button color={color} styleClass={"create"} text={text} onClick={onClick}/>
-            {/* <Button color='pink' text='Create Event' onClick={()} /> */}
+
+            {
+                button !== undefined ?
+                    button === true ? <Button color={color} styleClass={"create"} text={text} onClick={onClick}/> : <></>
+                            : <Button color={color} styleClass={"create"} text={text} onClick={onClick}/>
+            }
         </header>
     )
 }
