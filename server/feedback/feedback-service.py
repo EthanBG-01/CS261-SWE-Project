@@ -761,13 +761,13 @@ def getMood(results):
 			if (emotion == "sadness" or "stressed" or "angry"):
 				moodList[0] = moodList[0] + emotionsDict.get(emotion)
 			elif (emotion == "tired" or "worried" or "confused"):
-				moodList[0] = moodList[0] + emotionsDict.get(emotion)
+				moodList[1] = moodList[1] + emotionsDict.get(emotion)
 			elif (emotion == "bored"):
-				moodList[0] = moodList[0] + emotionsDict.get(emotion)
+				moodList[2] = moodList[2] + emotionsDict.get(emotion)
 			elif (emotion == "grateful" or "motivated" or "optimism"):
-				moodList[0] = moodList[0] + emotionsDict.get(emotion)
+				moodList[3] = moodList[3] + emotionsDict.get(emotion)
 			elif (emotion == "accomplished" or "joy" or "excited"):
-				moodList[0] = moodList[0] + emotionsDict.get(emotion)
+				moodList[4] = moodList[4] + emotionsDict.get(emotion)
 
 	print("moodList : ", moodList)
 
