@@ -22,7 +22,7 @@ export default function Login() {
 
         let returnFlag = false;
 
-        let payload = {
+        let payload = { // Might not need this
             'email': email,
             'password': password,
             'userType': "host"
