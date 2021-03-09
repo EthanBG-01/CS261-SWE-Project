@@ -12,7 +12,7 @@ db.feedback_tb.drop()
 questions = db.questions
 templates = db.templates
 
-questions.insert_many([{'questionID' : 1, 'question' : 'How satisfied are you with the session so far?', 'outputType' : 'average', 'questionType' : 'template', 'responseType' : [-5,5], 'templateID' : [1]},
+questions.insertMany([{'questionID' : 1, 'question' : 'How satisfied are you with the session so far?', 'outputType' : 'average', 'questionType' : 'template', 'responseType' : [-5,5], 'templateID' : [1]},
 
 {'questionID' : 2, 'question' : 'Are the topics covered interesting?', 'outputType' : 'discrete', 'questionType' : 'template', 'responseType' : ["yes", "no", "not interesting", "somewhat not interesting", "meh", "somewhat interesting", "interesting"], 'templateID' : [1]},
 
@@ -47,7 +47,7 @@ questions.insert_many([{'questionID' : 1, 'question' : 'How satisfied are you wi
 {'questionID' : 17, 'question'  : 'What is your role in this project?', 'outputType': 'text-no-sentiment', 'questionType': 'template', 'responseType': 'user-text', 'templateID' : [2]}])
 
 
-templates.insert_many([{'templateID' : 1, 'questionID' : [1,2,3,4,5,6,7,8,9,10], 'templateName' : 'non-project'},
+templates.insertMany([{'templateID' : 1, 'questionID' : [1,2,3,4,5,6,7,8,9,10], 'templateName' : 'non-project'},
 
 {'templateID' : 2, 'questionID' : [11,12,13,14,15,16,17,5,6,7], 'templateName' : 'project'}])
 

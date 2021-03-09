@@ -495,7 +495,7 @@ def postCreateEvent():
 #         {"questionID" : 8, "questionType" : "text-no-sentiment", "response" : "I like the pace of the session"},
 #         {"questionID" : 9, "questionType" : "text-no-sentiment", "response" : "The tone is a little boring"},
 #         {"questionID" : 18, "questionType" : "discrete", "response" : "yes"}
-
+#
 #     ]
 # }
 
@@ -723,7 +723,7 @@ def analyseAverage(questionToUpdate, questionID, userResponse):
 	responses = dataDict["Responses"]
 
 	newResponse = responses + 1
-	newAverage = (average + userResponse) / newResponse
+	newAverage = ((average * responses) + userResponse) / newResponse
 
 	dataDict.update({"Average" : newAverage})
 	dataDict.update({"Responses" : newResponse})
@@ -947,7 +947,12 @@ def viewFeedback():
 
 
 
-
+@app.route('/test-model', methods=["GET"])
+def testModel():
+    newData = request.get_json()
+    message = newData["text"]
+    emotion = applyModel(message)
+    return jsonify(emotion)
 
 
 @app.route('/get-template', methods=["GET"])
