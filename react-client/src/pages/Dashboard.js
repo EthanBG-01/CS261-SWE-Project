@@ -7,6 +7,9 @@ import {useHistory} from "react-router-dom";
 
 import { BarChart, Bar, LabelList, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label} from 'recharts';
 
+import "../styles/Dashboard.css";
+import Header from "../components/Header";
+
 
 export function BarChartContainer({title, dataPairs, type}) {
   const arr = [];
@@ -15,19 +18,12 @@ export function BarChartContainer({title, dataPairs, type}) {
   }
 
   return (  
-    <div
-      style={{
-        backgroundColor:"#ffffff",
-        border:"solid grey 3px",
-        borderRadius:"5px",
-        width: 500,
-        height: 450       
-      }}>
+    <div className="widget">
       <h1>{title}</h1>
 
       <BarChart
         width={500}
-        height={400}  
+        height={400}
         data={arr}
         margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
         >
@@ -49,19 +45,12 @@ export function AvgChartContainer({title, dataPairs}) {
   //{'Average': 3.0, 'Responses': 1}
   const arr = [{name: "Average", average: dataPairs.Average}];
   return (  
-    <div
-      style={{
-        backgroundColor:"#ffffff",
-        border:"solid grey 3px",
-        borderRadius:"5px",
-        width: 500,
-        height: 450       
-      }}>
+    <div className="widget">
       <h1>{title}</h1>
 
       <BarChart
         width={500}
-        height={400}  
+        height={400}
         data={arr}
         margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
         >
@@ -86,25 +75,18 @@ export function SentimentChartContainer({title, dataPairs}) {
   }
 
   return (  
-    <div
-      style={{
-        backgroundColor:"#ffffff",
-        border:"solid grey 3px",
-        borderRadius:"5px",
-        width: 500,
-        height: 450       
-      }}>
+    <div className="widget">
       <h1>{title}</h1>
 
       <BarChart
         width={500}
-        height={400}  
+        height={400}
         data={arr}
         margin={{ top: 20, right: 30, left: 20, bottom: 50}}
         >
         <XAxis dataKey="Emotions">
           <Label value={"Emotions"} offset={-10} position="insideBottom" />
-        </XAxis>  
+        </XAxis>
         <Tooltip />
         <CartesianGrid strokeDasharray="3 3" />
         <YAxis allowDecimals={false} label={{ value: "Totals", angle: -90, position: 'insideLeft'}}/>
@@ -125,14 +107,7 @@ export function TextChartContainer({title, responses}) {
   }
 
   return ( 
-    <div
-      style={{
-        backgroundColor:"#ffffff",
-        border:"solid grey 3px",
-        borderRadius:"5px",
-        width: 500,
-        height: 450       
-      }}>
+    <div className="widget">
       <h1>{title}</h1>
 
       <div style={{width: "20%", float:"left"}}>
@@ -184,13 +159,13 @@ const Dashboard = () => {
 
     useEffect(() => {
 
-        if (user.login === false){
-            console.log("Not logged in.");
-            history.push("/login");
-        }
-
-        // TODO: THIS IS THE ACTIVE EVENT: USE THIS VARIABLE TO CALL THE API!
-        console.log(events.activeEvent);
+        // if (user.login === false){
+        //     console.log("Not logged in.");
+        //     history.push("/login");
+        // }
+        //
+        // // TODO: THIS IS THE ACTIVE EVENT: USE THIS VARIABLE TO CALL THE API!
+        // console.log(events.activeEvent);
 
 
     }, []);
@@ -198,23 +173,33 @@ const Dashboard = () => {
     const [startDate, setStartDate] = useState(null);
 
       return (
-        <div>
-            {results.map((item, i) => {
-              return (
-                item.questionType == "discrete" ?
-                  <><BarChartContainer title = {item.questionTitle} dataPairs = {item.data.categories} />
-                  <br></br></> :
-                  item.questionType == "average" ?
-                    <><AvgChartContainer title = {item.questionTitle} dataPairs = {item.data} />
-                    <br></br></> :
-                    item.questionType == "text-sentiment" ?
-                    <><SentimentChartContainer title = {item.questionTitle} dataPairs = {item.data.emotions} />
-                    <br></br></> :
-                      <><TextChartContainer title = {item.questionTitle} responses = {item.data.Responses} />
-                      <br></br></>
-              )
-            })}
-        </div>
+          <div className="Main">
+              <Header className="header" title='Events Analysis'  text='Create Event' name={user.name} button={false}/>
+              <div className="listTitlePadding">
+                  <div className="listTitle">
+                      <div className='box'>
+                          <h4>Event Name</h4>
+                      </div>
+                  </div>
+              </div>
+              <div className="mainBody">
+
+                  <div className="widgetContainer">
+                      {results.map((item, i) => {
+                          return (
+                              item.questionType === "discrete" ?
+                                  <BarChartContainer title = {item.questionTitle} dataPairs = {item.data.categories} />:
+                                  item.questionType === "average" ?
+                                      <AvgChartContainer title = {item.questionTitle} dataPairs = {item.data} /> :
+                                      item.questionType === "text-sentiment" ?
+                                          <SentimentChartContainer   title = {item.questionTitle} dataPairs = {item.data.emotions} /> :
+                                          <TextChartContainer  title = {item.questionTitle} responses = {item.data.Responses} />
+                          )
+                      })}
+                  </div>
+              </div>
+          </div>
+
       );
 }
 

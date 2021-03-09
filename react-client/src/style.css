@@ -1,8 +1,4 @@
 * {
-<<<<<<< HEAD
-    font-family: Arial;
-=======
->>>>>>> 2beacecc6e5a19d53415e94aed357b57a96fdf7d
     margin:0;
     box-sizing: border-box;
 }
@@ -15,8 +11,6 @@ body > #root > div {
     display: flex;
     flex-direction: column;
 }
-
-
 
 .numbox{
     display: flex;
