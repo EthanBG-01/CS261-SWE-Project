@@ -38,6 +38,7 @@ const Test = () => {
     // function addq() {
 
     // }
+    
 
     function addDate(){
         setStartDate([...startDate, { startdate:new Date() }])
@@ -65,6 +66,10 @@ const Test = () => {
         const values = [...startDate];
         values[index].startdate = e;
         setStartDate(values);
+        let date = moment(startDate[0].startdate).format('YYYY-MM-DD');
+        let time = moment(startDate[0].startdate).format('H:mm:ss');
+        console.log(date);
+        console.log(time);
     }
 
     const handleEndChange = (index, e) => {
@@ -118,6 +123,14 @@ const Test = () => {
         const values = [...questions];
         values.splice(index,1);
         setQuestions(values);
+    }
+
+    function handleTypeChange(e){
+        setType(e.target.value)
+        if (e.target.value === "Talk" || e.target.value === "Project"){
+            setStartDate([{ startdate: new Date()}])
+            setEndDate([{ enddate: new Date()}])
+        }
     }
 
     //by default, send to backend
@@ -234,7 +247,7 @@ const Test = () => {
                             <div>
                                 <h3>Event Type</h3>
                                 {/* <input value={type} onChange={e=> setType(e.target.value)} /> */}
-                                <select value={type} onChange={e=> setType(e.target.value)}>
+                                <select value={type} onChange={e=> handleTypeChange(e)}>
                                     <option value="Talk">Talk</option>
                                     <option value="Project">Project</option>
                                     <option value="Workshop">Workshop</option>
@@ -255,6 +268,7 @@ const Test = () => {
                                         <DatePicker
                                         selected={date.startdate}
                                         onChange={e => handleStartChange(index,e)}
+                                        minDate={new Date()}
                                         // onSelect={console.log(startDate)}
                                         // onChange={date => setStartDate(date)}
                                         // onChange={date => setStartDate(moment(date).format("MMMM Do YYYY, h:mm:ss a"))}
@@ -277,6 +291,7 @@ const Test = () => {
                                         <DatePicker
                                         selected={date.enddate}
                                         onChange={e => handleEndChange(index,e)}
+                                        minDate={startDate[index].startdate}
                                         // onSelect={console.log(startDate)}
                                         // onChange={date => setStartDate(date)}
                                         // onChange={date => setStartDate(moment(date).format("MMMM Do YYYY, h:mm:ss a"))}

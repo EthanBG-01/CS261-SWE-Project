@@ -7,11 +7,11 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
                     deleteQuestion, ...props} ) => {
     const marks = [
         {
-          value: 1,
+          value: -5,
           label: ques.questionData[0],
         },
         {
-          value: 10,
+          value: 5,
           label: ques.questionData[1],
         },
       ];
@@ -110,9 +110,9 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
                             <Typography id="discrete-slider-restrict" gutterBottom>
                             </Typography>
                             <Slider
-                                min={1}
+                                min={-5}
                                 step={1}
-                                max={10}
+                                max={5}
                                 // valueLabelFormat={valueLabelFormat}
                                 getAriaValueText={valuetext}
                                 aria-labelledby="discrete-slider-restrict"
