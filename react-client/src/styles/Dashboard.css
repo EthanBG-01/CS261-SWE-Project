@@ -1,6 +1,7 @@
 .Main{
     flex:1;
     display:flex;
+    overflow-y: hidden;
     flex-direction: column;
 }
 
@@ -9,7 +10,25 @@
     padding-right:10%;
     padding-top:4px;
     flex:1;
-    background-color: #f1f1f1;
     font-family: Roboto;
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: #f1f1f1;
+}
+
+.widgetContainer {
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.innerWidget{
+    width:100%;
+    height:100%;
+}
+
+.widget {
+    border:none;
+    border-radius: 8px;
+    background-color: white;
 }

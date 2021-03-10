@@ -2,6 +2,7 @@
     flex:1;
     display:flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .mainBody {
@@ -9,7 +10,73 @@
     padding-right:10%;
     padding-top:4px;
     flex:1;
-    background-color: #f1f1f1;
     font-family: Roboto;
     overflow: scroll;
+}
+
+.detBody{
+
+    display:flex;
+    flex-direction: row;
+}
+
+.input {
+    border: 1px solid #e2e2e2;
+    padding:8px;
+    width:100%;
+}
+
+.inputDesc{
+    width:100%;
+    height:50px;
+    resize:none;
+    padding:8px;
+    border: 1px solid #e2e2e2;
+}
+
+.formTitles {
+    font-size: small;
+}
+
+.listTitle {
+    font-family: Roboto, serif;
+    color: #292929;
+    display: flex;
+    overflow: auto;
+    min-height: 10px;
+    align-items: center;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: white;
+}
+
+.listTitle h4{
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.listTitlePadding{
+    padding: 8px 10%;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.titleDetails{
+    flex:2;
+}
+
+.eventTypeDetails{
+    flex:1;
+}
+
+.dateDetails{
+    flex:1;
+}
+
+
+.titlesFlex{
+    display:flex;
+}
+
+.textInp{
+    flex:2;
 }
