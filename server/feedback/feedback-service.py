@@ -248,10 +248,10 @@ def postCreateEvent():
 			questionID = None
 		if (questionID == ""):
 			questionID = None
-		questionText = questionInformation["questionText"]
-		outputType = questionInformation["questionType"].lower()
+		questionText = questionInformation["question"]
+		outputType = questionInformation["outputType"].lower()
 
-		responseType = questionInformation["questionData"]
+		responseType = questionInformation["responseType"]
 
 
 		# so we first deal with it if it is a custom question
@@ -286,9 +286,9 @@ def postCreateEvent():
 			# not a custom question, questionID exists, add to questionIDArray.
 			questionIDArray.append(int(questionID))
 
-		questionTextArray.append(questionInformation["questionText"])
-		outputTypeArray.append(questionInformation["questionType"])
-		responseTypeArray.append(questionInformation["questionData"])
+		questionTextArray.append(questionInformation["question"])
+		outputTypeArray.append(questionInformation["outputType"])
+		responseTypeArray.append(questionInformation["responseType"])
 
 
 	# end of questionInformation, so now we add to events.

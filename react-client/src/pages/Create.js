@@ -257,12 +257,37 @@ const Create = () => {
         try {
             const result = await axios.post('http://localhost/event/create-event', eventDetails, {headers:{"Authorization" : `Bearer ${user.access}`}});
             console.log(result);
+
+            let eventID = result.data.eventID;
+            if (!Array.isArray(eventID)){
+                eventID = [result.data.eventID];
+            }
+
+            try {
+                let questionDetails = {
+                    'eventID':eventID,
+                    'data':questions
+                }
+                const result2 = await axios.post('http://localhost/feedback/post-create-event', questionDetails);
+                console.log(result2);
+            } catch (e){
+                console.log(e.response);
+            }
         } catch (e) {
             console.log(e.response);
         }
 
         // TODO: Disable the save event button? Somehow show that the save was successful.
         // TODO: Sorting?
+
+        //{
+        //   "eventCode": 34106108,
+        //   "eventID": 3,
+        //   "response": "event created"
+        // }
+
+
+
     }
 
 
