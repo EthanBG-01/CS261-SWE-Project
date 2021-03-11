@@ -70,7 +70,7 @@ db = client["feedback-analytics"]
 # {"eventID" : 6}
 
 
-@app.route('/get-questions', methods=["GET"])
+@app.route('/get-questions', methods=['POST'])
 def getQuestions():
 	# take in specific eventID (could be a list) and look at events collections and return questions.
 	newData = request.get_json()
@@ -248,10 +248,10 @@ def postCreateEvent():
 			questionID = None
 		if (questionID == ""):
 			questionID = None
-		questionText = questionInformation["questionText"]
-		outputType = questionInformation["questionType"].lower()
+		questionText = questionInformation["question"]
+		outputType = questionInformation["outputType"].lower()
 
-		responseType = questionInformation["questionData"]
+		responseType = questionInformation["responseType"]
 
 
 		# so we first deal with it if it is a custom question
@@ -286,9 +286,9 @@ def postCreateEvent():
 			# not a custom question, questionID exists, add to questionIDArray.
 			questionIDArray.append(int(questionID))
 
-		questionTextArray.append(questionInformation["questionText"])
-		outputTypeArray.append(questionInformation["questionType"])
-		responseTypeArray.append(questionInformation["questionData"])
+		questionTextArray.append(questionInformation["question"])
+		outputTypeArray.append(questionInformation["outputType"])
+		responseTypeArray.append(questionInformation["responseType"])
 
 
 	# end of questionInformation, so now we add to events.
@@ -955,7 +955,7 @@ def testModel():
     return jsonify(emotion)
 
 
-@app.route('/get-template', methods=["GET"])
+@app.route('/get-template', methods=['POST'])
 def getTemplate():
 	# take in eventType and return questionIDs and questions based off it.
 	newData = request.get_json()

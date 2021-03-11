@@ -7,12 +7,12 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
                     deleteQuestion, ...props} ) => {
     const marks = [
         {
-          value: 1,
-          label: ques.questionData[0],
+          value: -5,
+          label: ques.responseType[0],
         },
         {
-          value: 10,
-          label: ques.questionData[1],
+          value: 5,
+          label: ques.responseType[1],
         },
       ];
 
@@ -23,7 +23,7 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
 
     const handleChangeFLabel= (e) => {
         // const values = ques;
-        // values.questionData[0] = e.target.value
+        // values.responseType[0] = e.target.value
         // onChanges(values);
         const value = e.target.value;
         const index = Number(num) - 1;
@@ -64,8 +64,12 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
     }
 
     const handleChangeSelect= (e) => {
-        const value = e.target.value;
+        let value = e.target.value;
+        if (value === 'text') {
+            value = 'text-no-sentiment'
+        }
         const index = Number(num) - 1;
+        console.log("Updating Global!");
         updateSelect(value, index);
     }
 
@@ -95,7 +99,7 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
         <>
             {def === true ? (
                 <>
-                {ques.responsetype === 'average' ? (
+                {ques.outputType === 'average' ? (
                     <div className='event'>
                         <div className='numbox'>
                             {num}
@@ -110,9 +114,9 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
                             <Typography id="discrete-slider-restrict" gutterBottom>
                             </Typography>
                             <Slider
-                                min={1}
+                                min={-5}
                                 step={1}
-                                max={10}
+                                max={5}
                                 // valueLabelFormat={valueLabelFormat}
                                 getAriaValueText={valuetext}
                                 aria-labelledby="discrete-slider-restrict"
@@ -121,7 +125,7 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
                             />
                         </div>
                     </div> 
-                ) : ques.responsetype === 'discrete' ? (
+                ) : ques.outputType === 'discrete' ? (
                     <div className='event'>
                         <div className='numbox'>
                             {num}
@@ -135,7 +139,7 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
                         <div className='resbox'>
                             <FormControl component="fieldset">
                                 <RadioGroup>
-                                    {ques.questionData.map((data,index) => (
+                                    {ques.responseType.map((data,index) => (
                                         <FormControlLabel value={data} control={<Radio />} label={data} />
                                     ))}
                                     {/* <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
@@ -146,7 +150,7 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
                             </FormControl>
                         </div>
                     </div>
-                ) : ques.responsetype === 'text' ? (
+                ) : ques.outputType === 'text-no-sentiment' ? (
                     <div className='event'>
                         <div className='numbox'>
                             {num}
@@ -161,7 +165,7 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
                             <TextField label="Answer" variant="filled" />
                         </div>
                     </div>
-                ) : ques.responsetype === 'text-sentiment' ? (
+                ) : ques.outputType === 'text-sentiment' ? (
                     <div className='event'>
                         <div className='numbox'>
                             {num}
@@ -182,16 +186,16 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
                 </>
             ) : (
                 <>
-                    {ques.responsetype === 'average' ? (
+                    {ques.outputType === 'average' ? (
                         <div className='event'>
                             <div className='numbox'>
                                 {num}
                             </div>
                             <div className='textbox'>
-                            <TextField placeholder={ques.question} label="Question" variant="filled" onChange={e=> handleQuestionChange(e)}/>
+                            <TextField placeholder={ques.question} variant="filled" onChange={e=> handleQuestionChange(e)}/>
                             </div>
                             <div className='typebox'>
-                                <select value={ques.responsetype} onChange={e=> handleChangeSelect(e)}>
+                                <select value={ques.outputType} onChange={e=> handleChangeSelect(e)}>
                                     <option value="average">Slider</option>
                                     <option value="discrete">Multiple Choice</option>
                                     <option value="text">Text Input</option>
@@ -199,24 +203,24 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
                             </div>
                             <div className='resbox'>
                             {/* think of way to update and display the mui slider using states */}
-                                <TextField placeholder={ques.questionData[0]} label="Label for 1" variant="filled" onChange={e=> handleChangeFLabel(e)}/>
+                                <TextField placeholder={ques.responseType[0]} variant="filled" onChange={e=> handleChangeFLabel(e)}/>
                                 {/* <TextField label="Label for 1" variant="filled" /> */}
-                                <TextField placeholder={ques.questionData[1]} label="Label for 10" variant="filled" onChange={e=> handleChangeSLabel(e)}/>
+                                <TextField placeholder={ques.responseType[1]} variant="filled" onChange={e=> handleChangeSLabel(e)}/>
                             </div>
                             <div className='removebox'>
                                 <Button color="red" text="x" onClick={()=> handleDeleteQuestion()}/>
                             </div>
                         </div> 
-                    ) : ques.responsetype === 'discrete' ? (
+                    ) : ques.outputType === 'discrete' ? (
                         <div className='event'>
                             <div className='numbox'>
                                 {num}
                             </div>
                             <div className='textbox'>
-                            <TextField placeholder={ques.question} label="Question" variant="filled" onChange={e=> handleQuestionChange(e)}/>
+                            <TextField placeholder={ques.question} variant="filled" onChange={e=> handleQuestionChange(e)}/>
                             </div>
                             <div className='typebox'>
-                                <select value={ques.responsetype} onChange={e=> handleChangeSelect(e)}>
+                                <select value={ques.outputType} onChange={e=> handleChangeSelect(e)}>
                                     <option value="average">Slider</option>
                                     <option value="discrete">Multiple Choice</option>
                                     <option value="text">Text Input</option>
@@ -229,9 +233,9 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
                                         <FormControlLabel value="No" control={<Radio />} label="No" />
                                     </RadioGroup>
                                 </FormControl> */}
-                                {ques.questionData.map((data,index) => (
+                                {ques.responseType.map((data,index) => (
                                     <div key={index}>
-                                        <TextField label="Radio Labels" placeholder={data} variant="filled" onChange={e=> handleChangeRadio(index, e)} />
+                                        <TextField placeholder={data} variant="filled" onChange={e=> handleChangeRadio(index, e)} />
                                         <Button color="blue" text="remove" onClick={()=> handleDeleteRadio(index)} />
                                         {/* <button onClick={()=> handleDeleteRadio(index)}>Remove</button> */}
                                     </div>
@@ -243,16 +247,16 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
                                 <Button color="red" text="x" onClick={()=> handleDeleteQuestion()}/>
                             </div>
                         </div>
-                    ) : ques.responsetype === 'text' ? (
+                    ) : ques.outputType === 'text-no-sentiment' ? (
                         <div className='event'>
                             <div className='numbox'>
                                 {num}
                             </div>
                             <div className='textbox'>
-                                <TextField placeholder={ques.question} label="Question" variant="filled" onChange={e=> handleQuestionChange(e)}/>
+                                <TextField placeholder={ques.question} variant="filled" onChange={e=> handleQuestionChange(e)}/>
                             </div>
                             <div className='typebox'>
-                                <select value={ques.responsetype} onChange={e=> handleChangeSelect(e)}>
+                                <select value={ques.outputType} onChange={e=> handleChangeSelect(e)}>
                                     <option value="average">Slider</option>
                                     <option value="discrete">Multiple Choice</option>
                                     <option value="text">Text Input</option>
@@ -265,7 +269,7 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
                                 <Button color="red" text="x" onClick={()=> handleDeleteQuestion()}/>
                             </div>
                         </div>
-                    ) : ques.responsetype === 'text-sentiment' ? (
+                    ) : ques.outputType === 'text-sentiment' ? (
                         <div className='event'>
                             <div className='numbox'>
                                 {num}

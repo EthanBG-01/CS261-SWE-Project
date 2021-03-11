@@ -4,6 +4,7 @@ import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
 import {UserContext} from "../contexts/UserContext";
 import {useHistory} from "react-router-dom";
+import axios from "axios";
 
 import Header from '../components/Header'
 import Button from '../components/Button'
@@ -38,6 +39,7 @@ const Test = () => {
     // function addq() {
 
     // }
+    
 
     function addDate(){
         setStartDate([...startDate, { startdate:new Date() }])
@@ -65,6 +67,10 @@ const Test = () => {
         const values = [...startDate];
         values[index].startdate = e;
         setStartDate(values);
+        let date = moment(startDate[0].startdate).format('YYYY-MM-DD');
+        let time = moment(startDate[0].startdate).format('H:mm:ss');
+        console.log(date);
+        console.log(time);
     }
 
     const handleEndChange = (index, e) => {
@@ -118,6 +124,14 @@ const Test = () => {
         const values = [...questions];
         values.splice(index,1);
         setQuestions(values);
+    }
+
+    function handleTypeChange(e){
+        setType(e.target.value)
+        if (e.target.value === "Talk" || e.target.value === "Project"){
+            setStartDate([{ startdate: new Date()}])
+            setEndDate([{ enddate: new Date()}])
+        }
     }
 
     //by default, send to backend
@@ -211,14 +225,46 @@ const Test = () => {
     ]);
 
 
-    console.log(startDate)
-    console.log(questions)
+    function testGet(){
+        console.log("test")
+        // axios({
+        //     method: 'get',
+        //     url: 'http://localhost/feedback/get-template'
+        // })
+        // .then(res => console.log(res))
+
+        axios
+            .get('http://localhost/feedback/get-template')
+            .then(res => console.log(res))
+            .catch(err => console.error(err))
+    }
+
+
+
+    // console.log(startDate)
+    // console.log(questions)
     
+    const fetchTemplate = async () => {
+        try{
+            console.log("yeet");
+            const result = await axios.get('http://localhost/feedback/get-template');
+            console.log(result);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    useEffect(() => {
+        const asyncfetchTemplate = async () => {
+            const status = await fetchTemplate();
+        }
+        asyncfetchTemplate();
+    }, []);
 
       return (
 
             <div className="Main">
-                <Header title='Create Events' color='blue' text='Save Event' />
+                <Header title='Create Events' color='blue' text='Save Event' onClick={testGet} />
                 <div className="mainBody">
                     <div className="detBox">
                         <h4>Details</h4>
@@ -234,7 +280,7 @@ const Test = () => {
                             <div>
                                 <h3>Event Type</h3>
                                 {/* <input value={type} onChange={e=> setType(e.target.value)} /> */}
-                                <select value={type} onChange={e=> setType(e.target.value)}>
+                                <select value={type} onChange={e=> handleTypeChange(e)}>
                                     <option value="Talk">Talk</option>
                                     <option value="Project">Project</option>
                                     <option value="Workshop">Workshop</option>
@@ -255,6 +301,7 @@ const Test = () => {
                                         <DatePicker
                                         selected={date.startdate}
                                         onChange={e => handleStartChange(index,e)}
+                                        minDate={new Date()}
                                         // onSelect={console.log(startDate)}
                                         // onChange={date => setStartDate(date)}
                                         // onChange={date => setStartDate(moment(date).format("MMMM Do YYYY, h:mm:ss a"))}
@@ -277,6 +324,7 @@ const Test = () => {
                                         <DatePicker
                                         selected={date.enddate}
                                         onChange={e => handleEndChange(index,e)}
+                                        minDate={startDate[index].startdate}
                                         // onSelect={console.log(startDate)}
                                         // onChange={date => setStartDate(date)}
                                         // onChange={date => setStartDate(moment(date).format("MMMM Do YYYY, h:mm:ss a"))}
