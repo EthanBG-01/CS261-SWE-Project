@@ -210,7 +210,7 @@ def register():
 
         # accessToken = create_access_token(identity=newUserID, expires_delta = datetime.timedelta(days=15))
         # accessToken = create_access_token(identity=newUserID, expires_delta = datetime.timedelta(seconds=15))
-        accessToken = create_access_token(identity=newUserID, expires_delta = datetime.timedelta(seconds=30))
+        accessToken = create_access_token(identity=newUserID, expires_delta = datetime.timedelta(days=30))
         refreshToken = create_refresh_token(newUserID)      # maybe expiration?
 
         print("accessToken : ", accessToken)
@@ -246,7 +246,7 @@ def register():
 def refresh():
     currentUserID = get_jwt_identity()
     print("currentUserID : ", currentUserID)
-    newAccessToken = create_access_token(identity=currentUserID, expires_delta = datetime.timedelta(seconds=30))
+    newAccessToken = create_access_token(identity=currentUserID, expires_delta = datetime.timedelta(days=30))
     print("newAccessToken : ", newAccessToken)
     return jsonify(access_token=newAccessToken), 200
 
@@ -329,7 +329,7 @@ def login():
 
         if (passwordCheck == True):
             # password matches, generate token and send back.
-            accessToken = create_access_token(identity=userID, expires_delta = datetime.timedelta(seconds=30))
+            accessToken = create_access_token(identity=userID, expires_delta = datetime.timedelta(days=30))
             # accessToken = create_access_token(identity=userID, expires_delta = datetime.timedelta(days=15))
             refreshToken = create_refresh_token(userID)      # maybe expiration?
 

@@ -25,9 +25,13 @@ const Create = () => {
     ]);
     const [ename, setEName] = useState('');
     const [hname, setHName] = useState('');
-    const [type, setType] = useState('');
+    const [eNameError, setENameError] = useState('');
+    const [hNameError, setHNameError] = useState('');
+    const [type, setType] = useState("talk");
     const [desc, setDesc] = useState('');
     const [defquestion, setDefQuestion] = useState(true);
+
+
 
     function addDate(){
         setStartDate([...startDate, { startdate:new Date() }])
@@ -111,212 +115,61 @@ const Create = () => {
     }
 
     function handleTypeChange(e){
-        setType(e.target.value)
-        if (e.target.value === "talk" || e.target.value === "project"){
-            setStartDate([{ startdate: new Date()}])
-            setEndDate([{ enddate: new Date()}])
-        }
+        let value = e.target.value;
+        setType(value, () => {
+            if (value === "talk" || value === "project"){
+                setStartDate([{ startdate: new Date()}])
+                setEndDate([{ enddate: new Date()}])
+            }
+        });
+
     }
 
-    const [questions, setQuestions] = useState([
-        {
-            userID: 1,
-            responsetype: 'average',
-            default: 'Yes',
-            question: 'How satisfied are you with the event?',
-            questionData: [
-                "Unsatisfied",
-                "Satisfied"
-            ],
-        },
-        {
-            userID: 2,
-            responsetype: 'discrete',
-            default: 'Yes',
-            question: 'Are the topics covered interesting?',
-            questionData: [
-                "Yes",
-                "No",
-            ]
-        },
-        {
-            userID: 3,
-            responsetype: 'average',
-            default: 'Yes',
-            question: 'Is the session delivered in an engaging way?',
-            questionData: [
-                "No",
-                "Yes"
-            ],
-        },
-        {
-            userID: 4,
-            responsetype: 'discrete',
-            default: 'Yes',
-            question: 'How do you find the pace of the session?',
-            questionData: [
-                "Too Slow",
-                "Slow",
-                "Ok",
-                "Fast",
-                "Too Fast"
-            ],
-        },
-        {
-            userID: 5,
-            responsetype: 'text',
-            default: 'Yes',
-            question: 'What elements of the session did you like the most?',
-            questionData: [],
-        },
-        {
-            userID: 6,
-            responsetype: 'text',
-            default: 'Yes',
-            question: 'What is your Professional Experience?',
-            questionData: [],
-        },
-        {
-            userID: 7,
-            responsetype: 'text',
-            default: 'Yes',
-            question: 'If anything, what do you dislike about the session?',
-            questionData: [],
-        },
-        {
-            userID: 8,
-            responsetype: 'discrete',
-            default: 'Yes',
-            question: 'How are you feeling right now?',
-            questionData: [
-                "Very Bad",
-                "Bad",
-                "Neutral",
-                "Good",
-                "Excellent"
-            ],
-        },
-        {
-            userID: 9,
-            responsetype: 'text-sentiment',
-            default: 'Yes',
-            question: 'Can you provide a few reasons why?',
-            questionData: [],
-        },
-    ]);
+
+    //userID
+    //responseType
+    //default
+    //question
+    //questionData
+
+
+    //outputType -> average, discrete, text-sentiment, text-no-sentiment
+    //responseType -> Array of data
+    //questionID -> Number
+    //question -> Text
+    const [questions, setQuestions] = useState([]);
 
     useEffect(() => {
+        const getQuestions = async () => {
+            await fetchTemplate();
+        }
+
+        // login check:
         // if (user.login === false){
-        //     history.push("/login");
+        //      history.push("/login");
         // }
+
+        // Fetch the default template questinos:
+        getQuestions();
+
 
     }, []);
 
-    // const fetchTemplate = async () => {
-    //     console.log("yeet");
-    //     const result = axios.get('http://localhost/feedback/get-template',{headers: {"eventType": `${type}`}});
-    //     console.log(result);
-    //     try {
-    //         const result = await axios.get('http://localhost/feedback/get-template',{headers: {"eventType": `${type}`}});
-  
-    //         // let eventsReturned = [];
-  
-    //         // // If there are events:
-    //         // if (result.data.response === undefined){
-    //         //     eventsReturned = [].concat(result.data.single, result.data.multi);
-    //         // }
-  
-    //         // setQuestions(result);
-    //         console.log("yeet");
-    //         console.log(result);
-        
-  
-    //     } catch (e) {
-    //         // Unauthorised due to expired token
-    //         // if (e.response.status === 401 && e.response.data.msg === "Token has expired") {
-    //         //     const newToken = await refreshToken();
-    //         //     if (newToken !== undefined){
-    //         //         let userObject = {...user, access: newToken};
-    //         //         setUser(userObject,() => {fetchTemplate()});
-    //             // }
-            
-    //     }
-    // }
-
-    // // const saveEvent = async () => {
-
-    // //     // let date = moment(startDate[0].startdate).format('YYYY-MM-DD');
-    // //     // let time = moment(startDate[0].startdate).format('H:mm:ss');
-    // //     // console.log(date);
-    // //     // console.log(time);
-
-    // //     let returnFlag = false;
-    // //     let startValues = [...startDate];
-    // //     let endValues = [...endDate];
-    // //     if (type === "workshop") {
-    // //         let sdate = [];
-    // //         let edate = [];
-    // //         let stime = [];
-    // //         let etime = [];
-    // //         var i;
-    // //         for (i = 0; i < startValues.length; i++) {
-    // //             sdate = [...sdate, moment(startValues[i].startdate).format('YYYY-MM-DD')];
-    // //             edate = [...edate, moment(endValues[i].enddate).format('YYYY-MM-DD')];
-    // //             stime = [...stime, moment(startValues[i].startdate).format('H:mm:ss')];
-    // //             etime = [...etime, moment(endValues[i].enddate).format('H:mm:ss')];
-    // //         }
-    // //     } else {
-    // //         sdate = moment(startValues[0].startdate).format('YYYY-MM-DD');
-    // //         edate = moment(endValues[0].enddate).format('YYYY-MM-DD');
-    // //         stime = moment(startValues[0].startdate).format('H:mm:ss');
-    // //         etime = moment(endValues[0].enddate).format('H:mm:ss');
-    // //     }
-
-    // //     if (ename.length === 0) {
-    // //         setENameError("Event title cannot be left blank");
-    // //         returnFlag = true;
-    // //     } else {
-    // //         setENameError("");
-    // //     }
-
-    // //     if (hname.length === 0) {
-    // //         setHNameError("Host Name cannot be left blank.");
-    // //         returnFlag = true;
-    // //     } else {
-    // //         setHNameError("");
-    // //     }
-
-    // //     if (returnFlag) return;
-
-    // //     try {
-    // //         const result = await axios.post('http://localhost/event/create-event', {
-    // //             'eventName': ename,
-    // //             'hostName': hname,
-    // //             'eventType': type,
-    // //             'startDate': sdate,
-    // //             'endDate': edate,
-    // //             'startTime': stime,
-    // //             'endTime': etime,
-    // //             'description': desc,
-    // //         });
-
-    // //         const userObject = {
-    // //             access: result.data.access_token,
-    // //             refresh: result.data.refresh_token,
-    // //             login: true,
-    // //             name: result.data.response,
-    // //         };
-
-    // //         console.log("Success");
-    // //         setUser(userObject);
-
-    // //         history.push("/");
-
-    // //     } catch (e) {
-    // //         console.log(e.response.data.response);
-    // //         setSubmitError(e.response.data.response);
-    // //     }
-    // // };
+    const fetchTemplate = async () => {
+        try {
+            const result = await axios.post('http://localhost/feedback/get-template',{"eventType": `${type}`});
+            setQuestions(result.data.response);
+        } catch (e) {
+            // Unauthorised due to expired token
+            // if (e.response.status === 401 && e.response.data.msg === "Token has expired") {
+            //     const newToken = await refreshToken();
+            //     if (newToken !== undefined){
+            //         let userObject = {...user, access: newToken};
+            //         setUser(userObject,() => {fetchTemplate()});
+                // }
+            console.log(e.response);
+        }
+    }
 
     // useEffect(() => {
     //     console.log("yeet")
@@ -338,10 +191,85 @@ const Create = () => {
 
     // }, []);
 
+    const createEvent = async () => {
+        let errorFlag = false;
+
+        // Collect event time/date details:
+        let startValues = [...startDate];
+        let endValues = [...endDate];
+
+        let sdate, edate, stime, etime;
+
+        if (type === "workshop") {
+            sdate = [];
+            edate = [];
+            stime = [];
+            etime = [];
+            for (var i = 0; i < startValues.length; i++) {
+                sdate = [...sdate, moment(startValues[i].startdate).format('YYYY-MM-DD')];
+                edate = [...edate, moment(endValues[i].enddate).format('YYYY-MM-DD')];
+                stime = [...stime, moment(startValues[i].startdate).format('H:mm:ss')];
+                etime = [...etime, moment(endValues[i].enddate).format('H:mm:ss')];
+            }
+        } else {
+            sdate = moment(startValues[0].startdate).format('YYYY-MM-DD');
+            edate = moment(endValues[0].enddate).format('YYYY-MM-DD');
+            stime = moment(startValues[0].startdate).format('H:mm:ss');
+            etime = moment(endValues[0].enddate).format('H:mm:ss');
+        }
+
+        if (ename.length === 0) {
+            setENameError("Event title cannot be left blank");
+            errorFlag = true;
+        } else {
+            setENameError("");
+        }
+
+        if (hname.length === 0) {
+            setHNameError("Host Name cannot be left blank.");
+            errorFlag = true;
+        } else {
+            setHNameError("");
+        }
+
+        // TODO: Description Error Flag
+
+        if (errorFlag) {
+            console.log("empty");
+            return;
+        }
+
+        let eventDetails =
+            {
+            'eventName': ename,
+            'hostName': hname,
+            'eventType': type,
+            'startDate': sdate,
+            'endDate': edate,
+            'startTime': stime,
+            'endTime': etime,
+            'description': desc,
+        };
+
+        // TODO: event type not saving.
+        console.log(eventDetails);
+
+        try {
+            const result = await axios.post('http://localhost/event/create-event', eventDetails, {headers:{"Authorization" : `Bearer ${user.access}`}});
+            console.log(result);
+        } catch (e) {
+            console.log(e.response);
+        }
+
+        // TODO: Disable the save event button? Somehow show that the save was successful.
+        // TODO: Sorting?
+    }
+
 
     return (
         <div className="Main">
-            <Header title='Create Events' color='blue' text='Save Event' name={user.name} />
+
+            <Header title='Create Events' color='blue' text='Save Event' name={user.name} onClick={createEvent}/>
 
             <div className="listTitlePadding">
                 <div className="listTitle">
@@ -370,11 +298,13 @@ const Create = () => {
 
                                 <div className="eventTypeDetails">
                                     <h3 className="formTitles">Event Type</h3>
-                                    <select value={type} onChange={e=> handleTypeChange(e)}>
+
+                                    <select onChange={e=> handleTypeChange(e)}>
                                         <option value="talk">Talk</option>
                                         <option value="project">Project</option>
                                         <option value="workshop">Workshop</option>
                                     </select>
+
                                 </div>
                             </div>
 
@@ -465,7 +395,7 @@ const Create = () => {
                 </div>
                 <div className='questionBody'>
                     {questions.map((question,index) => (
-                        <div key={index}>
+                        <div key={index+"Q"}>
                             {/* <Question ques={question} num={(index + 1).toString()} def={defquestion} /> */}
                             <Question ques={question} num={(index + 1).toString()} def={defquestion}
                                       updateGlobal={handleChangeFLabel} deleteRadio={handleDelete} addRadio={handleAdd}

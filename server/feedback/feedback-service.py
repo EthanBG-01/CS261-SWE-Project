@@ -70,7 +70,7 @@ db = client["feedback-analytics"]
 # {"eventID" : 6}
 
 
-@app.route('/get-questions', methods=["GET"])
+@app.route('/get-questions', methods=['POST'])
 def getQuestions():
 	# take in specific eventID (could be a list) and look at events collections and return questions.
 	newData = request.get_json()
@@ -955,7 +955,7 @@ def testModel():
     return jsonify(emotion)
 
 
-@app.route('/get-template', methods=["GET"])
+@app.route('/get-template', methods=['POST'])
 def getTemplate():
 	# take in eventType and return questionIDs and questions based off it.
 	newData = request.get_json()

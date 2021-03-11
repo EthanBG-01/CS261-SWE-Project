@@ -12,13 +12,13 @@ db.feedback_tb.drop()
 questions = db.questions
 templates = db.templates
 
-questions.insertMany([{'questionID' : 1, 'question' : 'How satisfied are you with the session so far?', 'outputType' : 'average', 'questionType' : 'template', 'responseType' : [-5,5], 'templateID' : [1]},
+questions.insertMany([{'questionID' : 1, 'question' : 'How satisfied are you with the session so far?', 'outputType' : 'average', 'questionType' : 'template', 'responseType' : ["Unsatisfied","Very Satisfied"], 'templateID' : [1]},
 
 {'questionID' : 2, 'question' : 'Are the topics covered interesting?', 'outputType' : 'discrete', 'questionType' : 'template', 'responseType' : ["yes", "no", "not interesting", "somewhat not interesting", "meh", "somewhat interesting", "interesting"], 'templateID' : [1]},
 
-{'questionID' : 3, 'question' : 'Is the session delivered in an engaging way?', 'outputType' : 'average', 'questionType' : 'template', 'responseType' : [-5,5], 'templateID' : [1]},
+{'questionID' : 3, 'question' : 'Is the session delivered in an engaging way?', 'outputType' : 'average', 'questionType' : 'template', 'responseType' : ["Not Engaging","Very Engaging"], 'templateID' : [1]},
 
-{'questionID' : 4, 'question' : 'The length/pace of the session is: ', 'outputType' : 'average', 'questionType' : 'template', 'responseType' : [-5,5], 'templateID' : [1]},
+{'questionID' : 4, 'question' : 'The length/pace of the session is: ', 'outputType' : 'average', 'questionType' : 'template', 'responseType' : ["Too Slow","Too Fast"], 'templateID' : [1]},
 
 {'questionID' : 5, 'question' : 'How are you feeling right now?', 'outputType' : 'discrete', 'questionType' : 'template', 'responseType' : ["very bad", "bad", "neutral", "good", "excellent"], 'templateID' : [1,2]},
 
@@ -32,7 +32,7 @@ questions.insertMany([{'questionID' : 1, 'question' : 'How satisfied are you wit
 
 {'questionID' : 10, 'question'  : 'What is your job / professional experience?', 'outputType': 'text-no-sentiment', 'questionType': 'template', 'responseType': 'user-text', 'templateID' : [1]},
 
-{'questionID' : 11, 'question' : 'How satisfied are you with the project so far?', 'outputType' : 'average', 'questionType' : 'template', 'responseType' : [-5,5], 'templateID' : [2]},
+{'questionID' : 11, 'question' : 'How satisfied are you with the project so far?', 'outputType' : 'average', 'questionType' : 'template', 'responseType' : ["Unsatisfied","Very Satisfied"], 'templateID' : [2]},
 
 {'questionID' : 12, 'question' : 'Are you working on something you find interesting?', 'outputType' : 'discrete', 'questionType' : 'template', 'responseType' : ["yes", "no", "not interesting", "somewhat not interesting", "meh", "somewhat interesting", "interesting"], 'templateID' : [2]},
 
