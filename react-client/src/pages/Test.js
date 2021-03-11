@@ -4,6 +4,7 @@ import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
 import {UserContext} from "../contexts/UserContext";
 import {useHistory} from "react-router-dom";
+import axios from "axios";
 
 import Header from '../components/Header'
 import Button from '../components/Button'
@@ -224,14 +225,46 @@ const Test = () => {
     ]);
 
 
-    console.log(startDate)
-    console.log(questions)
+    function testGet(){
+        console.log("test")
+        // axios({
+        //     method: 'get',
+        //     url: 'http://localhost/feedback/get-template'
+        // })
+        // .then(res => console.log(res))
+
+        axios
+            .get('http://localhost/feedback/get-template')
+            .then(res => console.log(res))
+            .catch(err => console.error(err))
+    }
+
+
+
+    // console.log(startDate)
+    // console.log(questions)
     
+    const fetchTemplate = async () => {
+        try{
+            console.log("yeet");
+            const result = await axios.get('http://localhost/feedback/get-template');
+            console.log(result);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    useEffect(() => {
+        const asyncfetchTemplate = async () => {
+            const status = await fetchTemplate();
+        }
+        asyncfetchTemplate();
+    }, []);
 
       return (
 
             <div className="Main">
-                <Header title='Create Events' color='blue' text='Save Event' />
+                <Header title='Create Events' color='blue' text='Save Event' onClick={testGet} />
                 <div className="mainBody">
                     <div className="detBox">
                         <h4>Details</h4>
