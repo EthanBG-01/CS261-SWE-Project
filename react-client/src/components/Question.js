@@ -64,8 +64,12 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
     }
 
     const handleChangeSelect= (e) => {
-        const value = e.target.value;
+        let value = e.target.value;
+        if (value === 'text') {
+            value = 'text-no-sentiment'
+        }
         const index = Number(num) - 1;
+        console.log("Updating Global!");
         updateSelect(value, index);
     }
 

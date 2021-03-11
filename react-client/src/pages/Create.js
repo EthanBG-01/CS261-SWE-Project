@@ -48,11 +48,10 @@ const Create = () => {
     }
 
     function addQuestion(){
-        setQuestions([...questions, { responsetype: 'average',
-            default: 'No',
+        setQuestions([...questions,
+            { outputType: 'average',
             question: '',
-            questionData: [],
-        }])
+            responseType: ['Label', 'Label']}])
     }
 
     const handleStartChange = (index, e) => {
@@ -75,7 +74,7 @@ const Create = () => {
 
     function handleChangeFLabel(value, index, test){
         const values = [...questions];
-        values[index].questionData[test] = value;
+        values[index].responseType[test] = value;
         // console.log("test")
         // console.log(value)
         // console.log(index)
@@ -86,25 +85,25 @@ const Create = () => {
 
     function handleDelete(index, test){
         const values = [...questions];
-        values[index].questionData.splice(test,1);
+        values[index].responseType.splice(test,1);
         setQuestions(values);
     }
 
     function handleAdd(index){
         const values = [...questions];
-        values[index].questionData = [...values[index].questionData, ""]
+        values[index].responseType = [...values[index].responseType, ""]
         setQuestions(values);
     }
 
     function handleSelect(value, index){
         const values = [...questions];
-        values[index].responsetype = value;
+        values[index].outputType = value;
         setQuestions(values);
     }
 
     function handleText(value, index){
         const values = [...questions];
-        values[index].questionData = [value];
+        values[index].responseType = [value];
         setQuestions(values);
     }
 
@@ -407,9 +406,7 @@ const Create = () => {
                             <>
                                 {type === "workshop" ? (
                                     <Button color="green" text="Add"  onClick={addDate}/>
-                                ): (
-                                    null
-                                )}
+                                ): null}
                             </>
                         </div>
 
@@ -429,9 +426,7 @@ const Create = () => {
                         </div>
                     ))}
                     {/* <Question /> */}
-                    {defquestion ? (
-                        null
-                    ): (
+                    {defquestion ? null: (
                         <Button color="grey" text="Add Question"  onClick={addQuestion}/>
                     )}
 
