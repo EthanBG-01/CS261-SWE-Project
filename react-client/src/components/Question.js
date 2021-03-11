@@ -192,7 +192,7 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
                                 {num}
                             </div>
                             <div className='textbox'>
-                            <TextField placeholder={ques.question} label="Question" variant="filled" onChange={e=> handleQuestionChange(e)}/>
+                            <TextField placeholder={ques.question} variant="filled" onChange={e=> handleQuestionChange(e)}/>
                             </div>
                             <div className='typebox'>
                                 <select value={ques.outputType} onChange={e=> handleChangeSelect(e)}>
@@ -203,9 +203,9 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
                             </div>
                             <div className='resbox'>
                             {/* think of way to update and display the mui slider using states */}
-                                <TextField placeholder={ques.responseType[0]} label="Label for 1" variant="filled" onChange={e=> handleChangeFLabel(e)}/>
+                                <TextField placeholder={ques.responseType[0]} variant="filled" onChange={e=> handleChangeFLabel(e)}/>
                                 {/* <TextField label="Label for 1" variant="filled" /> */}
-                                <TextField placeholder={ques.responseType[1]} label="Label for 10" variant="filled" onChange={e=> handleChangeSLabel(e)}/>
+                                <TextField placeholder={ques.responseType[1]} variant="filled" onChange={e=> handleChangeSLabel(e)}/>
                             </div>
                             <div className='removebox'>
                                 <Button color="red" text="x" onClick={()=> handleDeleteQuestion()}/>
@@ -217,7 +217,7 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
                                 {num}
                             </div>
                             <div className='textbox'>
-                            <TextField placeholder={ques.question} label="Question" variant="filled" onChange={e=> handleQuestionChange(e)}/>
+                            <TextField placeholder={ques.question} variant="filled" onChange={e=> handleQuestionChange(e)}/>
                             </div>
                             <div className='typebox'>
                                 <select value={ques.outputType} onChange={e=> handleChangeSelect(e)}>
@@ -235,7 +235,7 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
                                 </FormControl> */}
                                 {ques.responseType.map((data,index) => (
                                     <div key={index}>
-                                        <TextField label="Radio Labels" placeholder={data} variant="filled" onChange={e=> handleChangeRadio(index, e)} />
+                                        <TextField placeholder={data} variant="filled" onChange={e=> handleChangeRadio(index, e)} />
                                         <Button color="blue" text="remove" onClick={()=> handleDeleteRadio(index)} />
                                         {/* <button onClick={()=> handleDeleteRadio(index)}>Remove</button> */}
                                     </div>
@@ -253,7 +253,7 @@ const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio,
                                 {num}
                             </div>
                             <div className='textbox'>
-                                <TextField placeholder={ques.question} label="Question" variant="filled" onChange={e=> handleQuestionChange(e)}/>
+                                <TextField placeholder={ques.question} variant="filled" onChange={e=> handleQuestionChange(e)}/>
                             </div>
                             <div className='typebox'>
                                 <select value={ques.outputType} onChange={e=> handleChangeSelect(e)}>

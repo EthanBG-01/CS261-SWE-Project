@@ -29,6 +29,7 @@ const Create = () => {
     const [hNameError, setHNameError] = useState('');
     const [type, setType] = useState("talk");
     const [desc, setDesc] = useState('');
+
     const [defquestion, setDefQuestion] = useState(true);
 
 
@@ -148,7 +149,7 @@ const Create = () => {
         //      history.push("/login");
         // }
 
-        // Fetch the default template questinos:
+        // Fetch the default template questions:
         getQuestions();
 
 
