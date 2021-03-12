@@ -12,6 +12,8 @@ import DatePicker from 'react-datepicker'
 import Header from '../components/Header'
 import Button from '../components/Button'
 import Question from '../components/Question'
+import Template from '../components/Template'
+import Customq from '../components/Customq'
 
 const Create = () => {
     const {user, setUser} = useContext(UserContext);
@@ -27,10 +29,12 @@ const Create = () => {
     const [hname, setHName] = useState('');
     const [eNameError, setENameError] = useState('');
     const [hNameError, setHNameError] = useState('');
+    const [descError, setDescError] = useState('');
     const [type, setType] = useState("talk");
     const [desc, setDesc] = useState('');
 
     const [defquestion, setDefQuestion] = useState(true);
+    const [eventSaved, setEventSaved] = useState(false);
 
 
 
@@ -53,6 +57,9 @@ const Create = () => {
             { outputType: 'average',
             question: '',
             responseType: ['Label', 'Label']}])
+        
+        console.log(questions)
+        console.log(tempquestions)
     }
 
     const handleStartChange = (index, e) => {
@@ -112,16 +119,36 @@ const Create = () => {
         const values = [...questions];
         values.splice(index,1);
         setQuestions(values);
+        console.log(questions)
+        console.log(tempquestions)
     }
 
     function handleTypeChange(e){
         let value = e.target.value;
+        console.log(type)
+        console.log("yeet3")
         setType(value, () => {
+            console.log(type)
+            console.log("yeet2")
             if (value === "talk" || value === "project"){
                 setStartDate([{ startdate: new Date()}])
                 setEndDate([{ enddate: new Date()}])
             }
+            // const getQuestions = async () => {
+            //     await fetchTemplate();
+            // }
+            // getQuestions();
         });
+        console.log(type)
+        console.log("yeet")
+        console.log(value)
+        const getQuestions = async (value) => {
+            await fetchTemplate2(value);
+        }
+        getQuestions(value);
+
+        console.log(questions)
+        console.log(tempquestions)
 
     }
 
@@ -138,6 +165,7 @@ const Create = () => {
     //questionID -> Number
     //question -> Text
     const [questions, setQuestions] = useState([]);
+    const [tempquestions, setTempQuestions] = useState([]);
 
     useEffect(() => {
         const getQuestions = async () => {
@@ -155,10 +183,28 @@ const Create = () => {
 
     }, []);
 
+    const fetchTemplate2 = async (value) => {
+        try {
+            const result = await axios.post('http://localhost/feedback/get-template',{"eventType": value});
+            setQuestions(result.data.response);
+            setTempQuestions(result.data.response);
+        } catch (e) {
+            // Unauthorised due to expired token
+            // if (e.response.status === 401 && e.response.data.msg === "Token has expired") {
+            //     const newToken = await refreshToken();
+            //     if (newToken !== undefined){
+            //         let userObject = {...user, access: newToken};
+            //         setUser(userObject,() => {fetchTemplate()});
+                // }
+            console.log(e.response);
+        }
+    }
+
     const fetchTemplate = async () => {
         try {
             const result = await axios.post('http://localhost/feedback/get-template',{"eventType": `${type}`});
             setQuestions(result.data.response);
+            setTempQuestions(result.data.response);
         } catch (e) {
             // Unauthorised due to expired token
             // if (e.response.status === 401 && e.response.data.msg === "Token has expired") {
@@ -232,6 +278,13 @@ const Create = () => {
             setHNameError("");
         }
 
+        if (desc.length === 0) {
+            setDescError("Host Name cannot be left blank.");
+            errorFlag = true;
+        } else {
+            setDescError("");
+        }
+
         // TODO: Description Error Flag
 
         if (errorFlag) {
@@ -250,6 +303,8 @@ const Create = () => {
             'endTime': etime,
             'description': desc,
         };
+
+        setEventSaved(true);
 
         // TODO: event type not saving.
         console.log(eventDetails);
@@ -293,8 +348,13 @@ const Create = () => {
 
     return (
         <div className="Main">
-
-            <Header title='Create Events' color='blue' text='Save Event' name={user.name} onClick={createEvent}/>
+            <Header title='Create Events' color='blue' text='Save Event' name={user.name} onClick={createEvent} saved={eventSaved}/>
+            {/* {eventSaved ? (
+                <Header title='Create Events' color='blue' text='Save Event' name={user.name} onClick={createEvent} saved={eventSaved}/>
+            ) : (
+                <Header title='Create Events' color='blue' text='Save Event' name={user.name} onClick={createEvent} saved={eventSaved}/>
+            )}
+            <Header title='Create Events' color='blue' text='Save Event' name={user.name} onClick={createEvent}/> */}
 
             <div className="listTitlePadding">
                 <div className="listTitle">
@@ -417,18 +477,42 @@ const Create = () => {
                     </div>
                 </div>
                 <div className='questionBody'>
-                    {questions.map((question,index) => (
+                    {/* {questions.map((question,index) => (
                         <div key={index+"Q"}>
-                            {/* <Question ques={question} num={(index + 1).toString()} def={defquestion} /> */}
                             <Question ques={question} num={(index + 1).toString()} def={defquestion}
                                       updateGlobal={handleChangeFLabel} deleteRadio={handleDelete} addRadio={handleAdd}
                                       updateSelect={handleSelect} updateText={handleText} updateQuestion={handleQuesChange}
                                       deleteQuestion={handleQuestionDelete} />
                         </div>
-                    ))}
+                    ))} */}
                     {/* <Question /> */}
-                    {defquestion ? null: (
+                    {defquestion === true ? (
+                        <>
+                        {tempquestions.map((tempquestion,index) => (
+                            <div key={index+"Qq"}>
+                                {/* <Question ques={question} num={(index + 1).toString()} def={defquestion} /> */}
+                                {/* <Template ques={tempquestion} num={(index + 1).toString()} /> */}
+                                <Question ques={tempquestion} num={(index + 1).toString()} def={defquestion} />
+                            </div>
+                        ))}
+                        </>
+                    ): (
+                        <>
+                        {questions.map((question,index) => (
+                            <div key={index+"Q"}>
+                                {/* <Customq ques={question} num={(index + 1).toString()}
+                                          updateGlobal={handleChangeFLabel} deleteRadio={handleDelete} addRadio={handleAdd}
+                                          updateSelect={handleSelect} updateText={handleText} updateQuestion={handleQuesChange}
+                                          deleteQuestion={handleQuestionDelete} /> */}
+                    
+                                <Question ques={question} num={(index + 1).toString()} def={defquestion}
+                                          updateGlobal={handleChangeFLabel} deleteRadio={handleDelete} addRadio={handleAdd}
+                                          updateSelect={handleSelect} updateText={handleText} updateQuestion={handleQuesChange}
+                                          deleteQuestion={handleQuestionDelete} />
+                            </div>
+                        ))}
                         <Button color="grey" text="Add Question"  onClick={addQuestion}/>
+                        </>
                     )}
 
                 </div>
