@@ -793,7 +793,7 @@ def getMood(results):
 
 
 
-@app.route('/view-feedback', methods=['GET'])
+@app.route('/view-feedback', methods=['POST'])
 def viewFeedback():
 	# host can view the feedback and analysis.
 	# analysis - get all the analysis results and convert the emotions to moods before returning.

@@ -85,7 +85,6 @@ export default function Register() {
             <div className={"bg-image2"}></div>
 
             <div className={"DetailsForm"}>
-                <h3>Welcome To</h3>
                 <div className={"TitleContainer"}>
                     <div className={"Title"}><h1>RT-Feedback</h1><p>Host</p></div>
                     <p>Register here to create events, projects and more to gain real-time feedback from your attendees and team members</p>

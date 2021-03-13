@@ -1,41 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web');
+
+
 .Login{
-    background-color: #303030;
+    background-image: linear-gradient(to bottom, #343434 0%, #0a0a0a 100%);
     width:100%;
     height:100%;
     overflow: hidden;
-    z-index:20;
-    font-family: Roboto;
+    z-index:18;
+    font-family: Titillium Web;
 }
 
 .Register{
-    background-color: #303030;
+    background-image: linear-gradient(to bottom, #343434 0%, #0a0a0a 100%);
     width:100%;
     height:100%;
     overflow: hidden;
-    z-index:20;
-    font-family: Roboto;
+    z-index:18;
+    font-family: Titillium Web;
 }
 
 .DetailsForm{
     background-color: white;
+    border-radius: 8px;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-    padding:50px;
-    padding-bottom: 50px;
+    padding-top:50px;
+    padding-left:80px;
+    padding-right:80px;
+    padding-bottom: 30px;
     z-index:10;
     -webkit-box-shadow: 5px 5px 5px -2px #acacac;
-    box-shadow: 5px 5px 5px -2px #1a1a1a;
+    box-shadow: 5px 5px 5px -2px #242424;
 }
 
 .DetailsForm input {
-    border-radius: 8px;
-    border:none;
-    background-color: #f3f3f3;
+    border-radius: 4px;
+    border:solid 1px #dbdbdb;
+    background-color: #fafafa;
     width:100%;
     z-index: 10;
     padding:8px;
+    -webkit-box-shadow: 5px 5px 5px -2px #acacac;
+    box-shadow: 5px 0px 5px -2px #f3f3f3;
     cursor: text;
+    font-size: 14px;
+    color:#444444;
+    font-family: Titillium Web;
+}
+
+.DetailsForm input:focus {
+    outline: none;
+    box-shadow: 0 0 3px #c4c4c4;
 }
 
 @media (min-width:800px) {
@@ -70,17 +86,21 @@
 }
 
 .DetailsForm button{
-    border-radius: 8px;
-    padding:8px;
+    border-radius: 4px;
+    padding:12px;
     text-align: center;
     width:100%;
     margin-top: 4%;
     border:none;
-    background-color:#11557C;
+    background-image: linear-gradient(to bottom right, #2F5A72 0%, #0F2F4A 100%);
     color:white;
-    font-weight: bold;
+    font-weight: 600;
     cursor:pointer;
+
 }
+
+
+
 
 .inputError{
     color:red;
@@ -91,15 +111,33 @@
 }
 
 .redirect p{
-    margin-bottom: 4px;
+    color: #9d9d9d;
 }
 
 .bg-image{
-    background-image: url("../assets/city.jpg");
+    background: linear-gradient(62deg, rgba(36,82,149,.5) 0%, rgba(1,43,80,.5) 0%), url("../assets/building.jpg");
     background-position: center;
     background-size: cover;
     position: absolute;
     width:100%;
     height:55%;
     z-index:-1;
+}
+
+.inputField h3{
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.Description{
+    width:90%;
+    margin:auto;
+}
+
+.BottomText{
+    color: #8a8a8a;
+    font-size: 16px;
+    bottom:16px;
+    right:16px;
+    position: absolute;
 }

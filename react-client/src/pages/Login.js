@@ -75,10 +75,9 @@ export default function Login() {
             <div className={"bg-image2"}></div>
 
             <div className={"DetailsForm"}>
-                <h3>Welcome To</h3>
                 <div className={"TitleContainer"}>
                     <div className={"Title"}><h1>RT-Feedback</h1><p>Host</p></div>
-                    Register here to create events, projects and more to gain real-time feedback from your attendees and team members
+                    <p className={"Description"}>Register today to access real-time feedback analytics on your projects and events.</p>
                 </div>
 
                 <br/><p className={"inputError"}>{submitError}</p><br/>
@@ -86,7 +85,7 @@ export default function Login() {
                 <div className={"inputField"}>
                     <h3>Email</h3>
                     <p className={"inputError"}>{emailError}</p>
-                    <input value={email} onChange={e=> setEmail(e.target.value)} />
+                    <input value={email} onChange={e=> setEmail(e.target.value)}/>
                 </div>
 
                 <div className={"inputField"}>
@@ -103,8 +102,8 @@ export default function Login() {
                 <div className={"redirect"}>
                     <p>Don't have an Account?</p><Link to='/register'>Register Here</Link>
                 </div>
-
             </div>
+            <p className={"BottomText"}>CS261 | Software Engineering : Group 21</p>
         </div>
     );
 }

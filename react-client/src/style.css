@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web');
+
 * {
     margin:0;
     box-sizing: border-box;
@@ -39,15 +41,15 @@ body > #root > div {
 
 nav {
     display: flex;
-    font-family: Roboto;
+    font-family: Titillium Web;
     justify-content: space-between;
     padding-left:10%;
     padding-right:10%;
     align-items: center;
     min-height: 6vh;
-    background: #1d1d1d;
+    background: #131313;
     color: white;
-    -webkit-box-shadow: 5px 5px 8px -3px rgba(29, 29, 29, 0.69);
+    -webkit-box-shadow: 5px 5px 8px -3px rgba(0, 0, 0, 0.69);
     box-shadow: 5px 5px 8px -3px rgba(17, 17, 17, 0.69);
     z-index: 20;
 }

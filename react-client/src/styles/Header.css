@@ -8,7 +8,7 @@
     min-height: 20vh;
     color:white;
     background: rgb(36,82,149);
-    background: linear-gradient(62deg, rgba(36,82,149,.8) 0%, rgba(1,43,80,.8) 0%), url("../assets/city.jpg");
+    background: linear-gradient(62deg, rgba(36,82,149,.5) 0%, rgba(1,43,80,.5) 0%), url("../assets/building.jpg");
     background-position: 0px -600px;
     background-size: cover;
 }
