@@ -25,7 +25,8 @@ const Dashboard = () => {
 
     const fetchResults = async () => {
         try {
-            const result = await axios.post('http://localhost/feedback/view-feedback', {eventID:[events.activeEvent]});
+            console.log("Fetching Results");
+            const result = await axios.post('http://localhost/feedback/view-feedback', {eventID:[2]});
             setResults(result.data);
         } catch (e) {
             console.log(e.response);
@@ -33,11 +34,10 @@ const Dashboard = () => {
     }
 
     useEffect(() => {
-
-        if (user.login === false){
-            console.log("Not logged in.");
-            history.push("/login");
-        }
+        // if (user.login === false){
+        //     console.log("Not logged in.");
+        //     history.push("/login");
+        // }
 
         const asyncFetchResults = async () => {
             const status = await fetchResults();
@@ -68,10 +68,10 @@ const Dashboard = () => {
             </div>
             <div className="mainBody">
                 <div>
-                    <h1>General Mood: {results.generalMood}</h1>
+                    <h1>General Mood: {results !== undefined ? results.generalMood : "N/A"}</h1>
                 </div>
                 <div className="widgetContainer">
-                    {results.analysis.map((item, i) => {
+                    {results === undefined ? <></> : results.analysis.map((item, i) => {
                         return (
                             item.questionType === "discrete" ?
                                 <BarChartWidget key={i} title = {item.questionTitle} dataPairs = {item.data.categories} />:

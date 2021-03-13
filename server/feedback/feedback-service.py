@@ -995,7 +995,7 @@ def getTemplate():
 def modelInit():
 	global modelInit
 
-	tars = TARSClassifier.load("final-model.pt")
+	tars = TARSClassifier.load("final-model2.pt")
 	tars.switch_to_task("EMOTIONS_CS261")
 	def inner():
 		return tars
