@@ -26,7 +26,7 @@ const Dashboard = () => {
     const fetchResults = async () => {
         try {
             console.log("Fetching Results");
-            const result = await axios.post('http://localhost/feedback/view-feedback', {eventID:[2]});
+            const result = await axios.post('http://localhost/feedback/view-feedback', {eventID:1});
             setResults(result.data);
         } catch (e) {
             console.log(e.response);
@@ -58,11 +58,11 @@ const Dashboard = () => {
 
     return (
         <div className="Main">
-            <Header className="header" title='Events Analysis'  text='Create Event' name={user.name} button={false}/>
+
             <div className="listTitlePadding">
                 <div className="listTitle">
                     <div className='box'>
-                        <h4>Event Name</h4>
+                        <h4>Analysis Dashboard</h4>
                     </div>
                 </div>
             </div>

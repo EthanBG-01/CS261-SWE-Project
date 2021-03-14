@@ -59,3 +59,9 @@
 .buttonTitle{
     flex:1;
 }
+
+.Empty{
+    width:100%;
+    text-align: center;
+    padding-top: 64px;
+}

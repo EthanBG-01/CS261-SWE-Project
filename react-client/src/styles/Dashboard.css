@@ -10,7 +10,7 @@
     padding-right:10%;
     padding-top:4px;
     flex:1;
-    font-family: Roboto;
+    font-family: Titillium Web;
     overflow-x: hidden;
     overflow-y: scroll;
     background-color: #f1f1f1;
@@ -25,10 +25,32 @@
 .innerWidget{
     width:100%;
     height:100%;
+    padding:30px;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
 }
 
 .widget {
+    margin:8px;
     border:none;
     border-radius: 8px;
     background-color: white;
+    -webkit-box-shadow: 5px 5px 5px -2px #acacac;
+    box-shadow: 5px 5px 5px -2px #dbdbdb;
+}
+
+.innerWidget h1 {
+    font-weight: 500;
+    font-size: 24px;
+    font-family: Titillium Web;
+}
+
+.pieChart{
+    border:solid #efefef 1px;
+    margin:auto;
+}
+
+.averageVal h1{
+    color: red;
 }

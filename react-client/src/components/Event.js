@@ -30,6 +30,9 @@ const Event = ({ event }) => {
                 <h5 float='left'>{event.eventType}</h5>
             </div>
             <div className='box'>
+                <h5 float='left'>{event.description}</h5>
+            </div>
+            <div className='box'>
                 <h5 float='left'>{event.startDate}, {event.startTime}</h5>
             </div>
             <div className='btnbox'>

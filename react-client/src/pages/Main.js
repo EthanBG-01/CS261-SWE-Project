@@ -85,6 +85,9 @@ function Main() {
                   <h4>Event Type</h4>
               </div>
               <div className='box'>
+                  <h4>Event Description</h4>
+              </div>
+              <div className='box'>
                   <h4>Event Date & Time</h4>
               </div>
               <div className='buttonTitle'>
@@ -112,7 +115,7 @@ function Main() {
                                           <Event key={index} id={event.id} event={event} /> : <></>
                           ))}
                       </>
-                      : <p>You haven't created any events yet, click 'Create Event' in the top left to get started.</p>
+                      : <p className={"Empty"}>You haven't created any events yet, click 'Create Event' in the top left to get started.</p>
                   : <p>Events Loading</p>
               }
           </div>

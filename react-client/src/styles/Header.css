@@ -20,3 +20,15 @@
 .header p{
     font-size:20px;
 }
+
+.create:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.create{
+    background-image: linear-gradient(to bottom right, #f3f3f3 0%, #f1f1f1 100%);
+    font-family: Titillium Web;
+    font-weight: 600;
+    font-size: 16px;
+}

@@ -307,10 +307,11 @@ const Create = () => {
 
                 <div className="detBox">
                     <h4>Details</h4>
-                    <div className="detBody">
+                    <div className="detBody dets">
 
                         <div className="titleDetails">
                             <div className="titlesFlex">
+
                                 <div className="textInp">
                                     <h3 className="formTitles">Title *</h3>
                                     <input className="input" value={ename} onChange={e=> setEName(e.target.value)} />
@@ -334,7 +335,7 @@ const Create = () => {
                             </div>
 
                             <div>
-                                <h3 className="formTitles">Event Description</h3>
+                                <h3 className="formTitles description">Event Description *</h3>
                                 <textarea  className="inputDesc"  value={desc} onChange={e=> setDesc(e.target.value)} />
                             </div>
                         </div>
@@ -369,7 +370,7 @@ const Create = () => {
                                 ))}
                             </div>
 
-                            <div className="dateDatails">
+                            <div className="dateDetails">
                                 <h3 className="formTitles">Event End Date</h3>
                                 {endDate.map((date,index) => (
                                     <div key={index}>

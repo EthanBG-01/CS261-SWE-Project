@@ -10,12 +10,20 @@
     padding-right:10%;
     padding-top:4px;
     flex:1;
-    font-family: Roboto;
+    font-family: Titillium Web;
     overflow: scroll;
 }
 
-.detBody{
+textarea {
+    font-family: Arial;
+}
 
+input, textarea {
+    border-radius: 4px;
+}
+
+.detBody{
+    padding-top: 12px;
     display:flex;
     flex-direction: row;
 }
@@ -24,6 +32,7 @@
     border: 1px solid #e2e2e2;
     padding:8px;
     width:100%;
+    border-radius: 4px;
 }
 
 .inputDesc{
@@ -61,22 +70,62 @@
 }
 
 .titleDetails{
+    margin-right: 30px;
     flex:2;
 }
 
 .eventTypeDetails{
     flex:1;
 }
+.eventTypeDetails h3{
+    margin-left:5%;
+}
+
+.eventTypeDetails select{
+    padding: 7px;
+    width:90%;
+    margin-left:5%;
+    border: 1px solid #e2e2e2;
+}
+
 
 .dateDetails{
     flex:1;
 }
 
+.dateDetails input {
+    padding: 8px;
+    border: 1px solid #e2e2e2;
+}
+
+.dateDetails button{
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #e2e2e2;
+    background-image: linear-gradient(to bottom right, #2F5A72 0%, #0F2F4A 100%);
+    color: white;
+}
+
+.dateDetails button:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
 
 .titlesFlex{
     display:flex;
+    width:100%;
 }
+
 
 .textInp{
     flex:2;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    box-shadow: 0 0 3px #c4c4c4;
+}
+
+.description{
+    padding-top: 12px;
 }
