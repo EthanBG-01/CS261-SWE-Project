@@ -4,7 +4,7 @@ import { Link, useHistory } from 'react-router-dom'
 
 import "../styles/Header.css";
 
-const Header = ({ title, color, text, name, button, onClick }) => {
+const Header = ({ title, color, text, name, button, onClick ,saved }) => {
     const history = useHistory()
     // clickFunc = () => {history.push("/create")}
     
@@ -19,12 +19,22 @@ const Header = ({ title, color, text, name, button, onClick }) => {
 
 
             {/* <h4>Welcome back Host Name</h4>  try para*/}
-
-            {
-                button !== undefined ?
-                    button === true ? <Button color={color} styleClass={"create"} text={text} onClick={onClick}/> : <></>
-                            : <Button color={color} styleClass={"create"} text={text} onClick={onClick}/>
-            }
+            {saved ? (
+                <h4>Event has been saved, Proceed to Main page through navigation bar</h4>
+            ) : (
+                <>
+                {
+                    button !== undefined ?
+                        button === true ? <Button color={color} styleClass={"create"} text={text} onClick={onClick}/> : <></>
+                                : <Button color={color} styleClass={"create"} text={text} onClick={onClick}/>
+                }
+                </>
+            )}
+                {/* {
+                    button !== undefined ?
+                        button === true ? <Button color={color} styleClass={"create"} text={text} onClick={onClick}/> : <></>
+                                : <Button color={color} styleClass={"create"} text={text} onClick={onClick}/>
+                } */}
         </header>
     )
 }
@@ -32,6 +42,7 @@ const Header = ({ title, color, text, name, button, onClick }) => {
 Header.defaultProps = {
     title: 'Website Name',
     color: 'pink',
+    saved: false
 }
 
 Header.propTypes = {
