@@ -72,46 +72,46 @@ db = client["feedback-analytics"]
 
 @app.route('/get-questions', methods=['POST'])
 def getQuestions():
-	# take in specific eventID (could be a list) and look at events collections and return questions.
-	newData = request.get_json()
-	eventID = newData["eventID"]
+    # take in specific eventID (could be a list) and look at events collections and return questions.
+    newData = request.get_json()
+    eventID = newData["eventID"]
 
-	# eventID will either be a list or just single id, and this can be used in the future for different questions per session
-	# but currently, each session has the same questions so if list, just get the first element as the eventID since they all the same questions.
+    # eventID will either be a list or just single id, and this can be used in the future for different questions per session
+    # but currently, each session has the same questions so if list, just get the first element as the eventID since they all the same questions.
 
-	if (type(eventID) == list):
-		eventID = eventID[0]
-
-
-	events = db.events
-	questions = db.questions
+    if (type(eventID) == list):
+        eventID = eventID[0]
 
 
-	try:
-		event = events.find_one({"eventID" : eventID})
-	except Exception as e:
-		return jsonify(response=e, msg="failure to find template."), 500
+    events = db.events
+    questions = db.questions
 
 
-	try:
-		ques = list(questions.find({"questionID" : {"$in": event["questionID"]}}, {"questionID" : 1, "question" : 1, "_id" : 0, "outputType" : 1, "responseType" : 1}))
-	except Exception as e:
-		return jsonify(response=e, msg="failure to find question details."), 500
-
-	returnArray = []
-	for record in ques:
-		# print("record : ", record)
-		returnArray.append(record)
-	client.close()
-
-	print("returnArray : ", returnArray)
+    try:
+        event = events.find_one({"eventID" : eventID})
+    except Exception as e:
+        return jsonify(response=e, msg="failure to find template."), 500
 
 
-	# get questions from events
+    try:
+        ques = list(questions.find({"questionID" : {"$in": event["questionID"]}}, {"questionID" : 1, "question" : 1, "_id" : 0, "outputType" : 1, "responseType" : 1}))
+    except Exception as e:
+        return jsonify(response=e, msg="failure to find question details."), 500
+
+    returnArray = []
+    for record in ques:
+        # print("record : ", record)
+        returnArray.append(record)
+    client.close()
+
+    print("returnArray : ", returnArray)
+
+
+    # get questions from events
 
 
 
-	return jsonify(response=returnArray), 200
+    return jsonify(response=returnArray), 200
 
 
 
@@ -220,208 +220,208 @@ def getQuestions():
 
 @app.route('/post-create-event', methods=['POST'])
 def postCreateEvent():
-	# event IDs as the input. array if workshop, otherwise single eventID
-	# questions..?
-	# client = pymongo.MongoClient("mongodb+srv://dev:dev123@cluster0.5tgu6.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
-	# db = client.analysisFeedback
-	feedback = db.feedback
-	events = db.events
-	questions = db.questions
-	templates = db.templates
-	analysis = db.analysis
+    # event IDs as the input. array if workshop, otherwise single eventID
+    # questions..?
+    # client = pymongo.MongoClient("mongodb+srv://dev:dev123@cluster0.5tgu6.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+    # db = client.analysisFeedback
+    feedback = db.feedback
+    events = db.events
+    questions = db.questions
+    templates = db.templates
+    analysis = db.analysis
 
-	newData = request.get_json()
+    newData = request.get_json()
 
-	eventID = newData["eventID"]
-	questionData = newData["data"]			# this'll be type list.
+    eventID = newData["eventID"]
+    questionData = newData["data"]			# this'll be type list.
 
-	questionIDArray = []
-	questionTextArray = []
-	outputTypeArray = []
-	responseTypeArray = []
-	for questionInformation in questionData:
-		# questionInformation is a dict containing information about a question.
-		try:
-			questionID = questionInformation["questionID"]
-		except KeyError:
-			print("questionID not given.")
-			questionID = None
-		if (questionID == ""):
-			questionID = None
-		questionText = questionInformation["question"]
-		outputType = questionInformation["outputType"].lower()
+    questionIDArray = []
+    questionTextArray = []
+    outputTypeArray = []
+    responseTypeArray = []
+    for questionInformation in questionData:
+        # questionInformation is a dict containing information about a question.
+        try:
+            questionID = questionInformation["questionID"]
+        except KeyError:
+            print("questionID not given.")
+            questionID = None
+        if (questionID == ""):
+            questionID = None
+        questionText = questionInformation["question"]
+        outputType = questionInformation["outputType"].lower()
 
-		responseType = questionInformation["responseType"]
-
-
-		# so we first deal with it if it is a custom question
-
-		if (questionID == None):
-			# get last inserted questionID and add 1 for custom question id.
-			# insert into questions.
-			# then we would add to questionID array
-			try:
-				lastQuestionIDQuery = questions.find().sort("questionID",-1).limit(1)
-			except Exception as e:
-				return jsonify(response=e, msg="failure to find last question ID."), 500
+        responseType = questionInformation["responseType"]
 
 
-			for record in lastQuestionIDQuery:
-				lastID = record["questionID"]
+        # so we first deal with it if it is a custom question
 
-			# insert custom
-			print("inserting custom")
-			try:
-				questions.insert_one({"questionID" : lastID + 1, "question" : questionText, "outputType" : outputType, "questionType" : "custom", "responseType" : responseType, "templateID" : []})
-			except Exception as e:
-				client.close()
-				return jsonify(response=e, msg="failure to insert custom question."), 500
-
-
-			# questions.delete_many({"questionID" : 18})
-			# questions.delete_many({"questionID" : 19})
-			questionIDArray.append(lastID + 1)
-
-		else:
-			# not a custom question, questionID exists, add to questionIDArray.
-			questionIDArray.append(int(questionID))
-
-		questionTextArray.append(questionInformation["question"])
-		outputTypeArray.append(questionInformation["outputType"])
-		responseTypeArray.append(questionInformation["responseType"])
+        if (questionID == None):
+            # get last inserted questionID and add 1 for custom question id.
+            # insert into questions.
+            # then we would add to questionID array
+            try:
+                lastQuestionIDQuery = questions.find().sort("questionID",-1).limit(1)
+            except Exception as e:
+                return jsonify(response=e, msg="failure to find last question ID."), 500
 
 
-	# end of questionInformation, so now we add to events.
+            for record in lastQuestionIDQuery:
+                lastID = record["questionID"]
+
+            # insert custom
+            print("inserting custom")
+            try:
+                questions.insert_one({"questionID" : lastID + 1, "question" : questionText, "outputType" : outputType, "questionType" : "custom", "responseType" : responseType, "templateID" : []})
+            except Exception as e:
+                client.close()
+                return jsonify(response=e, msg="failure to insert custom question."), 500
 
 
+            # questions.delete_many({"questionID" : 18})
+            # questions.delete_many({"questionID" : 19})
+            questionIDArray.append(lastID + 1)
 
-	# end of for loop, insert into events (eventID, questionID) VALUES (eventID, questionIDArray) for each event.
-	# we would then insert into analysis init the whole big thing. make this into a separate function.
-	# check for list
+        else:
+            # not a custom question, questionID exists, add to questionIDArray.
+            questionIDArray.append(int(questionID))
+
+        questionTextArray.append(questionInformation["question"])
+        outputTypeArray.append(questionInformation["outputType"])
+        responseTypeArray.append(questionInformation["responseType"])
+
+
+    # end of questionInformation, so now we add to events.
 
 
 
-
-	if (type(eventID) == list):
-		for ev in eventID:
-			print("inserting into events list")
-			try:
-				events.insert_one({"eventID" : ev, "questionID" : questionIDArray})
-			except Exception as e:
-				client.close()
-				return jsonify(response=e, msg="failure to insert event."), 500
-
-	else:
-		print("inserting into events list")
-		try:
-			events.insert_one({"eventID" : eventID, "questionID" : questionIDArray})
-		except Exception as e:
-			client.close()
-			return jsonify(response=e, msg="failure to insert event."), 500
+    # end of for loop, insert into events (eventID, questionID) VALUES (eventID, questionIDArray) for each event.
+    # we would then insert into analysis init the whole big thing. make this into a separate function.
+    # check for list
 
 
 
 
-	# questions have been added. now we initialise analysis and feedback - 1 document per eventID.
+    if (type(eventID) == list):
+        for ev in eventID:
+            print("inserting into events list")
+            try:
+                events.insert_one({"eventID" : ev, "questionID" : questionIDArray})
+            except Exception as e:
+                client.close()
+                return jsonify(response=e, msg="failure to insert event."), 500
 
-	print("questionTextArray : ", questionTextArray)
-	print("questionIDArray : ", questionIDArray)
-	print("outputTypeArray : ", outputTypeArray)
-	print("responseTypeArray : ", responseTypeArray)
-
-
-
-
-	length = len(questionData)
-
-
-
-	if (type(eventID) == list):
-		for event in eventID:
-			resultsArray = []
-			resultsDict = {}
-			eventDict = {}
-			textArray = []
-			textDict = {}
-			for x in range(length):
-				if (outputTypeArray[x] == "average"):
-					resultsDict = {"questionID" : questionIDArray[x], "questionTitle" : questionTextArray[x], "questionType" : outputTypeArray[x], "data" : {"Average" : 0, "Responses" : 0}}
-					resultsArray.append(resultsDict)
-
-				elif (outputTypeArray[x] == "discrete"):
-					resultsDict = {"questionID" : questionIDArray[x], "questionTitle" : questionTextArray[x], "questionType" : outputTypeArray[x], "data" : {"categories" : {option : 0 for option in responseTypeArray[x]}}}
-					resultsArray.append(resultsDict)
-
-				elif (outputTypeArray[x] == "text-no-sentiment"):
-					resultsDict = {"questionID" : questionIDArray[x], "questionTitle" : questionTextArray[x], "questionType" : outputTypeArray[x], "data" : {}}
-					resultsArray.append(resultsDict)
-					textDict = {"questionID" : questionIDArray[x], "questionText" : []}
-					textArray.append(textDict)
-
-				elif (outputTypeArray[x] == "text-sentiment"):
-					resultsDict = {"questionID" : questionIDArray[x], "questionTitle" : questionTextArray[x], "questionType" : outputTypeArray[x], "data" : {"emotions" : {"sadness" : 0, "stressed" : 0, "angry" : 0, "tired" : 0, "worried" : 0, "confused" : 0, "bored" : 0, "grateful" : 0, "motivated" : 0, "optimism" : 0, "accomplished" : 0, "joy" : 0, "excited" : 0}}}
-					resultsArray.append(resultsDict)
-					textDict = {"questionID" : questionIDArray[x], "questionText" : []}
-					textArray.append(textDict)
-
-
-			# print("resultsArray : ", resultsArray)
-			eventDict = {"eventID" : event, "results" : resultsArray}
-			# print("eventDict : ", eventDict)
-
-			try:
-				analysis.insert_one(eventDict)
-			except Exception as e:
-				client.close()
-				return jsonify(response=e, msg="failure to initialise analysis."), 500
-			# print("textArray : ", textArray)
-			finalTextDict = {"eventID" : event, "textResults" : textArray}
-			# print("finalTextDict : ", finalTextDict)
-
-			try:
-				feedback.insert_one(finalTextDict)
-			except Exception as e:
-				client.close()
-				return jsonify(response=e, msg="failure to initialise feedback."), 500
-
-
-	else:
-		# not a list, then only one eventID
-		for x in range(length):
-			if (outputTypeArray[x] == "average"):
-				resultsDict = {"questionID" : questionIDArray[x], "questionTitle" : questionTextArray[x], "questionType" : outputTypeArray[x], "data" : {"Average" : 0, "Responses" : 0}}
-				resultsArray.append(resultsDict)
-
-			elif (outputTypeArray[x] == "discrete"):
-				resultsDict = {"questionID" : questionIDArray[x], "questionTitle" : questionTextArray[x], "questionType" : outputTypeArray[x], "data" : {"categories" : {option : 0 for option in responseTypeArray[x]}}}
-				resultsArray.append(resultsDict)
-
-			elif (outputTypeArray[x] == "text-no-sentiment"):
-				resultsDict = {"questionID" : questionIDArray[x], "questionTitle" : questionTextArray[x], "questionType" : outputTypeArray[x], "data" : {}}
-				resultsArray.append(resultsDict)
-
-			elif (outputTypeArray[x] == "text-sentiment"):
-				resultsDict = {"questionID" : questionIDArray[x], "questionTitle" : questionTextArray[x], "questionType" : outputTypeArray[x], "data" : {"emotions" : {"sadness" : 0, "stressed" : 0, "angry" : 0, "tired" : 0, "worried" : 0, "confused" : 0, "bored" : 0, "grateful" : 0, "motivated" : 0, "optimism" : 0, "accomplished" : 0, "joy" : 0, "excited" : 0}}}
-				resultsArray.append(resultsDict)
+    else:
+        print("inserting into events list")
+        try:
+            events.insert_one({"eventID" : eventID, "questionID" : questionIDArray})
+        except Exception as e:
+            client.close()
+            return jsonify(response=e, msg="failure to insert event."), 500
 
 
 
-		# print("resultsArray : ", resultsArray)
-		eventDict = {"eventID" : eventID, "results" : resultsArray}
-		# print("eventDict : ", eventDict)
-		analysis.insert_one(eventDict)
-		# print("textArray : ", textArray)
-		finalTextDict = {"eventID" : eventID, "textResults" : textArray}
-		# print("finalTextDict : ", finalTextDict)
-		try:
-			feedback.insert_one(finalTextDict)
-		except Exception as e:
-			client.close()
-			return jsonify(response=e, msg="failure to initialise feedback."), 500
+
+    # questions have been added. now we initialise analysis and feedback - 1 document per eventID.
+
+    print("questionTextArray : ", questionTextArray)
+    print("questionIDArray : ", questionIDArray)
+    print("outputTypeArray : ", outputTypeArray)
+    print("responseTypeArray : ", responseTypeArray)
 
 
-	client.close()
-	return jsonify(response="success"), 200
+
+
+    length = len(questionData)
+
+
+
+    if (type(eventID) == list):
+        for event in eventID:
+            resultsArray = []
+            resultsDict = {}
+            eventDict = {}
+            textArray = []
+            textDict = {}
+            for x in range(length):
+                if (outputTypeArray[x] == "average"):
+                    resultsDict = {"questionID" : questionIDArray[x], "questionTitle" : questionTextArray[x], "questionType" : outputTypeArray[x], "data" : {"Average" : 0, "Responses" : 0}}
+                    resultsArray.append(resultsDict)
+
+                elif (outputTypeArray[x] == "discrete"):
+                    resultsDict = {"questionID" : questionIDArray[x], "questionTitle" : questionTextArray[x], "questionType" : outputTypeArray[x], "data" : {"categories" : {option : 0 for option in responseTypeArray[x]}}}
+                    resultsArray.append(resultsDict)
+
+                elif (outputTypeArray[x] == "text-no-sentiment"):
+                    resultsDict = {"questionID" : questionIDArray[x], "questionTitle" : questionTextArray[x], "questionType" : outputTypeArray[x], "data" : {}}
+                    resultsArray.append(resultsDict)
+                    textDict = {"questionID" : questionIDArray[x], "questionText" : []}
+                    textArray.append(textDict)
+
+                elif (outputTypeArray[x] == "text-sentiment"):
+                    resultsDict = {"questionID" : questionIDArray[x], "questionTitle" : questionTextArray[x], "questionType" : outputTypeArray[x], "data" : {"emotions" : {"sadness" : 0, "stressed" : 0, "angry" : 0, "tired" : 0, "worried" : 0, "confused" : 0, "bored" : 0, "grateful" : 0, "motivated" : 0, "optimism" : 0, "accomplished" : 0, "joy" : 0, "excited" : 0}}}
+                    resultsArray.append(resultsDict)
+                    textDict = {"questionID" : questionIDArray[x], "questionText" : []}
+                    textArray.append(textDict)
+
+
+            # print("resultsArray : ", resultsArray)
+            eventDict = {"eventID" : event, "results" : resultsArray}
+            # print("eventDict : ", eventDict)
+
+            try:
+                analysis.insert_one(eventDict)
+            except Exception as e:
+                client.close()
+                return jsonify(response=e, msg="failure to initialise analysis."), 500
+            # print("textArray : ", textArray)
+            finalTextDict = {"eventID" : event, "textResults" : textArray}
+            # print("finalTextDict : ", finalTextDict)
+
+            try:
+                feedback.insert_one(finalTextDict)
+            except Exception as e:
+                client.close()
+                return jsonify(response=e, msg="failure to initialise feedback."), 500
+
+
+    else:
+        # not a list, then only one eventID
+        for x in range(length):
+            if (outputTypeArray[x] == "average"):
+                resultsDict = {"questionID" : questionIDArray[x], "questionTitle" : questionTextArray[x], "questionType" : outputTypeArray[x], "data" : {"Average" : 0, "Responses" : 0}}
+                resultsArray.append(resultsDict)
+
+            elif (outputTypeArray[x] == "discrete"):
+                resultsDict = {"questionID" : questionIDArray[x], "questionTitle" : questionTextArray[x], "questionType" : outputTypeArray[x], "data" : {"categories" : {option : 0 for option in responseTypeArray[x]}}}
+                resultsArray.append(resultsDict)
+
+            elif (outputTypeArray[x] == "text-no-sentiment"):
+                resultsDict = {"questionID" : questionIDArray[x], "questionTitle" : questionTextArray[x], "questionType" : outputTypeArray[x], "data" : {}}
+                resultsArray.append(resultsDict)
+
+            elif (outputTypeArray[x] == "text-sentiment"):
+                resultsDict = {"questionID" : questionIDArray[x], "questionTitle" : questionTextArray[x], "questionType" : outputTypeArray[x], "data" : {"emotions" : {"sadness" : 0, "stressed" : 0, "angry" : 0, "tired" : 0, "worried" : 0, "confused" : 0, "bored" : 0, "grateful" : 0, "motivated" : 0, "optimism" : 0, "accomplished" : 0, "joy" : 0, "excited" : 0}}}
+                resultsArray.append(resultsDict)
+
+
+
+        # print("resultsArray : ", resultsArray)
+        eventDict = {"eventID" : eventID, "results" : resultsArray}
+        # print("eventDict : ", eventDict)
+        analysis.insert_one(eventDict)
+        # print("textArray : ", textArray)
+        finalTextDict = {"eventID" : eventID, "textResults" : textArray}
+        # print("finalTextDict : ", finalTextDict)
+        try:
+            feedback.insert_one(finalTextDict)
+        except Exception as e:
+            client.close()
+            return jsonify(response=e, msg="failure to initialise feedback."), 500
+
+
+    client.close()
+    return jsonify(response="success"), 200
 
 
 
@@ -502,289 +502,289 @@ def postCreateEvent():
 
 @app.route('/store-feedback', methods=['POST'])
 def storeFeedback():
-	# store the text related feedback from the user.
-	# also we'd have to call the analysis methods on the non-text based stuff
-	# check what the input is.
-	newData = request.get_json()
-	anon = newData["anon"]
-	anon = anon.lower()
-	if (anon == "false"):
-		name = newData["name"]
-	else:
-		name = "Anon"
-	results = newData["results"]
-	eventID = newData["eventID"]
+    # store the text related feedback from the user.
+    # also we'd have to call the analysis methods on the non-text based stuff
+    # check what the input is.
+    newData = request.get_json()
+    anon = newData["anon"]
+    anon = anon.lower()
+    if (anon == "false"):
+        name = newData["name"]
+    else:
+        name = "Anon"
+    results = newData["results"]
+    eventID = newData["eventID"]
 
 
-	analysis = db.analysis
-	feedback = db.feedback
-	questions = db.questions
+    analysis = db.analysis
+    feedback = db.feedback
+    questions = db.questions
 
-	try:
-		queryResults = analysis.find({"eventID" : eventID}, {"results" : 1, "_id" : 0})
-	except Exception as e:
-		return jsonify(response=e, msg="failure to find event in analysis."), 500
+    try:
+        queryResults = analysis.find({"eventID" : eventID}, {"results" : 1, "_id" : 0})
+    except Exception as e:
+        return jsonify(response=e, msg="failure to find event in analysis."), 500
 
-	for record in queryResults:
-		# record contains current analysis results for the questions.
-		recordList = record["results"]
-
-
-	updatedAnalysisArray = []
-
-	for question in results:
-		#question is a dict containing question info
-		questionID = question["questionID"]
-		userResponse = question["response"]
-		questionType = question["questionType"]
-		questionType = questionType.lower()
-		if ((type(userResponse) == str) and questionType == "discrete"):
-			userResponse = userResponse.lower()
+    for record in queryResults:
+        # record contains current analysis results for the questions.
+        recordList = record["results"]
 
 
+    updatedAnalysisArray = []
 
-		for query in recordList:
-			if (query["questionID"] == questionID):
-				questionToUpdate = query
-		print("questionToUpdate : ", questionToUpdate)
-
-		if (questionType == "average"):
-			newDict = analyseAverage(questionToUpdate, questionID, userResponse)
-			# analysis.update_many({"eventID" : eventID})
-		elif (questionType == "discrete"):
-			newDict = analyseDiscrete(questionToUpdate, questionID, userResponse)
-			#af
-		else:
-			# newDict = questionToUpdate
-			# continue
-			newDict = storeText(questionToUpdate, eventID, userResponse, questionID, name, feedback, questions)
-
-		updatedAnalysisArray.append(newDict)
+    for question in results:
+        #question is a dict containing question info
+        questionID = question["questionID"]
+        userResponse = question["response"]
+        questionType = question["questionType"]
+        questionType = questionType.lower()
+        if ((type(userResponse) == str) and questionType == "discrete"):
+            userResponse = userResponse.lower()
 
 
-	print("updatedAnalysisArray: ", updatedAnalysisArray)
 
-	# add to analysis.
+        for query in recordList:
+            if (query["questionID"] == questionID):
+                questionToUpdate = query
+        print("questionToUpdate : ", questionToUpdate)
+
+        if (questionType == "average"):
+            newDict = analyseAverage(questionToUpdate, questionID, userResponse)
+            # analysis.update_many({"eventID" : eventID})
+        elif (questionType == "discrete"):
+            newDict = analyseDiscrete(questionToUpdate, questionID, userResponse)
+            #af
+        else:
+            # newDict = questionToUpdate
+            # continue
+            newDict = storeText(questionToUpdate, eventID, userResponse, questionID, name, feedback, questions)
+
+        updatedAnalysisArray.append(newDict)
 
 
-	try:
-		analysis.update_many({"eventID" : eventID}, {"$set" : {"results" : updatedAnalysisArray}})
-	except Exception as e:
-		client.close()
-		return jsonify(response=e, msg="failure to update event analysis."), 500
+    print("updatedAnalysisArray: ", updatedAnalysisArray)
 
-	client.close()
+    # add to analysis.
 
-	return jsonify(response="success"), 200
+
+    try:
+        analysis.update_many({"eventID" : eventID}, {"$set" : {"results" : updatedAnalysisArray}})
+    except Exception as e:
+        client.close()
+        return jsonify(response=e, msg="failure to update event analysis."), 500
+
+    client.close()
+
+    return jsonify(response="success"), 200
 
 
 
 def applyModel(userResponse):
-	print("apply model")
-	tars = modelInit()
-	sent = Sentence(userResponse)
-	tars.predict(sent)
-	predicted_emotion = sent.labels[0].value
-	print("predicted_emotion: ", predicted_emotion)
-	return predicted_emotion
+    print("apply model")
+    tars = modelInit()
+    sent = Sentence(userResponse)
+    tars.predict(sent)
+    predicted_emotion = sent.labels[0].value
+    print("predicted_emotion: ", predicted_emotion)
+    return predicted_emotion
 
 
 
 
 def storeText(questionToUpdate, eventID, userResponse, questionID, name, feedback, questions):
-	#store text in feedback.
+    #store text in feedback.
 
-	# okay so we get the eventID, userResponse to insert and questionID to insert into. We fetch the array and append.
-
-
-	# print("\n")
-	# print("\n")
-	# print("questionID : ", questionID)
-	# print("eventID : ", eventID)
-	# print("userResponse : ", userResponse)
-
-	responsesArray = {"Responses" : [name, userResponse]}
+    # okay so we get the eventID, userResponse to insert and questionID to insert into. We fetch the array and append.
 
 
+    # print("\n")
+    # print("\n")
+    # print("questionID : ", questionID)
+    # print("eventID : ", eventID)
+    # print("userResponse : ", userResponse)
 
-	try:
-		textResults = feedback.find({"eventID" : eventID}, {"textResults" : 1, "_id" : 0})
-	except Exception as e:
-		return jsonify(response=e, msg="failure to find event in feedback."), 500
-
-
-	for record in textResults:
-		print("record : ", record)
-		print("record[TR] : ", record["textResults"])
-		textResultsDict = record["textResults"]
-
-	# print("textResultsDict : ", textResultsDict)
-
-	# append to the array.
-
-
-	for item in textResultsDict:
-		feedbackArray = item["questionText"]
-		idQuestion = item["questionID"]
-
-		print("feedbackArray : ", feedbackArray)
-		if (questionID == idQuestion):
-			feedbackArray.append([name, userResponse])
-
-
-	# print("feedbackArray : ", feedbackArray)
-	# print("textResultsDict : ", textResultsDict)
-
-	# we update textResultsDict into feedback somehow.
-	# UPDATE FEEDBACK SET TEXTRESULTS = TEXTRESULTSDICT WHERE EVENTID = 1
-	try:
-		feedback.update_many({"eventID" : eventID}, {"$set" : {"textResults" : textResultsDict}})
-	except Exception as e:
-		return jsonify(response=e, msg="failure to update event feedback."), 500
+    responsesArray = {"Responses" : [name, userResponse]}
 
 
 
-	# find outputType from questionID.
-	try:
-		sentimentStatus = questions.find({"questionID" : questionID}, {"outputType" : 1, "_id" : 0})
-	except Exception as e:
-		return jsonify(response=e, msg="failure to find outputType of question."), 500
+    try:
+        textResults = feedback.find({"eventID" : eventID}, {"textResults" : 1, "_id" : 0})
+    except Exception as e:
+        return jsonify(response=e, msg="failure to find event in feedback."), 500
 
-	for sentimentDict in sentimentStatus:
-		print(sentimentDict)
-		sentiment = sentimentDict["outputType"]
-		# print("sentiment : ", sentiment)
-		# print("sentimentDict : ", sentimentDict)
 
-		if (sentiment == "text-sentiment"):
-			emotion = applyModel(userResponse)
-			newDict = analyseText(questionToUpdate, questionID, emotion)
-			print("newDict text-sentiment : ", newDict)
-			return newDict
+    for record in textResults:
+        print("record : ", record)
+        print("record[TR] : ", record["textResults"])
+        textResultsDict = record["textResults"]
 
-		elif (sentiment == "text-no-sentiment"):
-			# do nothing
-			newDict = questionToUpdate
-			return newDict
+    # print("textResultsDict : ", textResultsDict)
+
+    # append to the array.
+
+
+    for item in textResultsDict:
+        feedbackArray = item["questionText"]
+        idQuestion = item["questionID"]
+
+        print("feedbackArray : ", feedbackArray)
+        if (questionID == idQuestion):
+            feedbackArray.append([name, userResponse])
+
+
+    # print("feedbackArray : ", feedbackArray)
+    # print("textResultsDict : ", textResultsDict)
+
+    # we update textResultsDict into feedback somehow.
+    # UPDATE FEEDBACK SET TEXTRESULTS = TEXTRESULTSDICT WHERE EVENTID = 1
+    try:
+        feedback.update_many({"eventID" : eventID}, {"$set" : {"textResults" : textResultsDict}})
+    except Exception as e:
+        return jsonify(response=e, msg="failure to update event feedback."), 500
+
+
+
+    # find outputType from questionID.
+    try:
+        sentimentStatus = questions.find({"questionID" : questionID}, {"outputType" : 1, "_id" : 0})
+    except Exception as e:
+        return jsonify(response=e, msg="failure to find outputType of question."), 500
+
+    for sentimentDict in sentimentStatus:
+        print(sentimentDict)
+        sentiment = sentimentDict["outputType"]
+        # print("sentiment : ", sentiment)
+        # print("sentimentDict : ", sentimentDict)
+
+        if (sentiment == "text-sentiment"):
+            emotion = applyModel(userResponse)
+            newDict = analyseText(questionToUpdate, questionID, emotion)
+            print("newDict text-sentiment : ", newDict)
+            return newDict
+
+        elif (sentiment == "text-no-sentiment"):
+            # do nothing
+            newDict = questionToUpdate
+            return newDict
 
 
 
 
 def analyseText(questionToUpdate, questionID, emotion):
-	dataDict = questionToUpdate["data"]["emotions"]
-	print("dataDict : ", dataDict)
-	updateDict = {}
-	for item in dataDict.items():
-		if (item[0] == emotion.lower()):
-			updateDict = {emotion.lower() : item[1] + 1}
-			dataDict.update(updateDict)
-	print("dataDict : ", dataDict)
+    dataDict = questionToUpdate["data"]["emotions"]
+    print("dataDict : ", dataDict)
+    updateDict = {}
+    for item in dataDict.items():
+        if (item[0] == emotion.lower()):
+            updateDict = {emotion.lower() : item[1] + 1}
+            dataDict.update(updateDict)
+    print("dataDict : ", dataDict)
 
-	emotionsDict = {"emotions" : dataDict}
-	print(emotionsDict)
+    emotionsDict = {"emotions" : dataDict}
+    print(emotionsDict)
 
-	newDict = {"questionID" : questionID, "questionTitle" : questionToUpdate["questionTitle"], "questionType" : "text-sentiment", "data" : emotionsDict}
+    newDict = {"questionID" : questionID, "questionTitle" : questionToUpdate["questionTitle"], "questionType" : "text-sentiment", "data" : emotionsDict}
 
-	return newDict
+    return newDict
 
 
 def analyseDiscrete(questionToUpdate, questionID, userResponse):
-	# print("heya")
-	# print("questionID : ", questionID)
-	# print("userResponse : ", userResponse)
-	# print("questionToUpdate : ", questionToUpdate)
-	dataDict = questionToUpdate["data"]["categories"]
-	print("dataDict : ", dataDict)
-	updateDict = {}
-	for item in dataDict.items():
-		if (item[0] == userResponse):
-			updateDict = {userResponse : item[1] + 1}
-			dataDict.update(updateDict)
-	print("dataDict : ", dataDict)
+    # print("heya")
+    # print("questionID : ", questionID)
+    # print("userResponse : ", userResponse)
+    # print("questionToUpdate : ", questionToUpdate)
+    dataDict = questionToUpdate["data"]["categories"]
+    print("dataDict : ", dataDict)
+    updateDict = {}
+    for item in dataDict.items():
+        if (item[0] == userResponse):
+            updateDict = {userResponse : item[1] + 1}
+            dataDict.update(updateDict)
+    print("dataDict : ", dataDict)
 
 
-	categoriesDict = {"categories" : dataDict}
-	print(categoriesDict)
+    categoriesDict = {"categories" : dataDict}
+    print(categoriesDict)
 
-	newDict = {"questionID" : questionID, "questionTitle" : questionToUpdate["questionTitle"], "questionType" : "discrete", "data" : categoriesDict}
+    newDict = {"questionID" : questionID, "questionTitle" : questionToUpdate["questionTitle"], "questionType" : "discrete", "data" : categoriesDict}
 
-	return newDict
+    return newDict
 
 
 
 
 def analyseAverage(questionToUpdate, questionID, userResponse):
-	#basically, we get the eventID in analysis and get the results object. In the results object we search for the questionID and get the data from this question.
-	# print("peekaboo")
-	# print("questionID : ", questionID)
-	# print("userResponse : ", userResponse)
-	dataDict = questionToUpdate["data"]
-	average = dataDict["Average"]
-	responses = dataDict["Responses"]
+    #basically, we get the eventID in analysis and get the results object. In the results object we search for the questionID and get the data from this question.
+    # print("peekaboo")
+    # print("questionID : ", questionID)
+    # print("userResponse : ", userResponse)
+    dataDict = questionToUpdate["data"]
+    average = dataDict["Average"]
+    responses = dataDict["Responses"]
 
-	newResponse = responses + 1
-	newAverage = ((average * responses) + userResponse) / newResponse
+    newResponse = responses + 1
+    newAverage = ((average * responses) + userResponse) / newResponse
 
-	dataDict.update({"Average" : newAverage})
-	dataDict.update({"Responses" : newResponse})
-	# print("dataDict : ", dataDict)
+    dataDict.update({"Average" : newAverage})
+    dataDict.update({"Responses" : newResponse})
+    # print("dataDict : ", dataDict)
 
-	newDict = {"questionID" : questionID, "questionTitle" : questionToUpdate["questionTitle"], "questionType" : "average", "data" : dataDict}
-	print("newDict : ", newDict)
+    newDict = {"questionID" : questionID, "questionTitle" : questionToUpdate["questionTitle"], "questionType" : "average", "data" : dataDict}
+    print("newDict : ", newDict)
 
 
-	return newDict
+    return newDict
 
 
 
 
 
 def getMood(results):
-	# 	Very Bad: Sadness, Stressed, Angry
-	# Bad: Tired, Worried, Confused
-	# Neutral: Bored
-	# Good: Grateful, Motivated, Optimism
-	# Excellent: Accomplished, Joy, Excited
-	moodList = [0,0,0,0,0]
-	arrayDicts = []
-	for question in results:
-		if (question["questionType"] == "text-sentiment"):
-			arrayDicts.append(question["data"]["emotions"])
-		elif ((question["questionType"] == "discrete") and ("tired" in question["data"]["categories"])):
-			print(question)
-			arrayDicts.append(question["data"]["categories"])
+    # 	Very Bad: Sadness, Stressed, Angry
+    # Bad: Tired, Worried, Confused
+    # Neutral: Bored
+    # Good: Grateful, Motivated, Optimism
+    # Excellent: Accomplished, Joy, Excited
+    moodList = [0,0,0,0,0]
+    arrayDicts = []
 
+    for question in results:
+        if (question["questionType"] == "text-sentiment"):
+            arrayDicts.append(question["data"]["emotions"])
+        elif ((question["questionType"] == "discrete") and ("tired" in question["data"]["categories"])):
+            print(question)
+            arrayDicts.append(question["data"]["categories"])
 
-	for emotionsDict in arrayDicts:
+    for emotionsDict in arrayDicts:
+        for emotion in emotionsDict.keys():
+            if (emotionsDict.get(emotion) > 0):
+                if (emotion == "sadness" or emotion == "stressed" or emotion == "angry"):
+                    moodList[0] = moodList[0] + emotionsDict.get(emotion)
+                elif (emotion == "tired" or emotion == "worried" or emotion == "confused"):
+                    moodList[1] = moodList[1] + emotionsDict.get(emotion)
+                elif (emotion == "bored"):
+                    moodList[2] = moodList[2] + emotionsDict.get(emotion)
+                elif (emotion == "grateful" or  emotion == "motivated" or emotion == "optimism"):
+                    moodList[3] = moodList[3] + emotionsDict.get(emotion)
+                elif (emotion == "accomplished" or emotion == "joy" or emotion == "excited"):
+                    moodList[4] = moodList[4] + emotionsDict.get(emotion)
 
-		for emotion in emotionsDict.keys():
-			if (emotion == "sadness" or "stressed" or "angry"):
-				moodList[0] = moodList[0] + emotionsDict.get(emotion)
-			elif (emotion == "tired" or "worried" or "confused"):
-				moodList[1] = moodList[1] + emotionsDict.get(emotion)
-			elif (emotion == "bored"):
-				moodList[2] = moodList[2] + emotionsDict.get(emotion)
-			elif (emotion == "grateful" or "motivated" or "optimism"):
-				moodList[3] = moodList[3] + emotionsDict.get(emotion)
-			elif (emotion == "accomplished" or "joy" or "excited"):
-				moodList[4] = moodList[4] + emotionsDict.get(emotion)
+    print("moodList : ", moodList)
 
-	print("moodList : ", moodList)
+    maxValue = max(moodList)
+    maxIndex = moodList.index(maxValue)
+    print(maxValue)
 
-	maxValue = max(moodList)
-
-	maxIndex = moodList.index(maxValue)
-
-	if (maxIndex == 0):
-		return "very bad"
-	elif (maxIndex == 1):
-		return "bad"
-	elif (maxIndex == 2):
-		return "neutral"
-	elif (maxIndex == 3):
-		return "good"
-	else:
-		return "excellent"
+    if (maxIndex == 0):
+        return "very bad"
+    elif (maxIndex == 1):
+        return "bad"
+    elif (maxIndex == 2):
+        return "neutral"
+    elif (maxIndex == 3):
+        return "good"
+    else:
+        return "excellent"
 
 
 
@@ -795,44 +795,44 @@ def getMood(results):
 
 @app.route('/view-feedback', methods=['POST'])
 def viewFeedback():
-	# host can view the feedback and analysis.
-	# analysis - get all the analysis results and convert the emotions to moods before returning.
-	analysis = db.analysis
-	feedback = db.feedback
+    # host can view the feedback and analysis.
+    # analysis - get all the analysis results and convert the emotions to moods before returning.
+    analysis = db.analysis
+    feedback = db.feedback
 
-	newData = request.get_json()
-	eventID = newData["eventID"]
-	if (type(eventID) == list):
-		eventID = eventID[0]
+    newData = request.get_json()
+    eventID = newData["eventID"]
+    if (type(eventID) == list):
+        eventID = eventID[0]
 
-	try:
-		analysisResults = analysis.find({"eventID" : eventID}, {"results" : 1, "_id" : 0})
-	except Exception as e:
-		return jsonify(response=e, msg="failure to find event information in analysis."), 500
-
-
-	for record in analysisResults:
-		results = record["results"]
-
-	mood = getMood(results)
-
-	print("mood : ", mood)
+    try:
+        analysisResults = analysis.find({"eventID" : eventID}, {"results" : 1, "_id" : 0})
+    except Exception as e:
+        return jsonify(response=e, msg="failure to find event information in analysis."), 500
 
 
-	print("\n")
-	try:
-		feedbackResults = feedback.find({"eventID" : eventID}, {"textResults" : 1, "_id" : 0})
-	except Exception as e:
-		return jsonify(response=e, msg="failure to find event information in feedback."), 500
+    for record in analysisResults:
+        results = record["results"]
 
-	for record in feedbackResults:
-		feedback = record["textResults"]
+    mood = getMood(results)
+
+    print("mood : ", mood)
 
 
+    print("\n")
+    try:
+        feedbackResults = feedback.find({"eventID" : eventID}, {"textResults" : 1, "_id" : 0})
+    except Exception as e:
+        return jsonify(response=e, msg="failure to find event information in feedback."), 500
+
+    for record in feedbackResults:
+        feedback = record["textResults"]
 
 
-	client.close()
-	return jsonify(generalMood = mood, analysis = results, feedback=feedback), 200
+
+
+    client.close()
+    return jsonify(generalMood = mood, analysis = results, feedback=feedback), 200
 
 
 
@@ -957,52 +957,52 @@ def testModel():
 
 @app.route('/get-template', methods=['POST'])
 def getTemplate():
-	# take in eventType and return questionIDs and questions based off it.
-	newData = request.get_json()
-	eventType = newData["eventType"]
-	eventType = eventType.lower()		# lower case.
-	templates = db.templates
-	questions = db.questions
+    # take in eventType and return questionIDs and questions based off it.
+    newData = request.get_json()
+    eventType = newData["eventType"]
+    eventType = eventType.lower()		# lower case.
+    templates = db.templates
+    questions = db.questions
 
-	if (eventType == "project"):
-		eventType = "project"
-	else:
-		eventType = "non-project"
+    if (eventType == "project"):
+        eventType = "project"
+    else:
+        eventType = "non-project"
 
-		# find template.
-	try:
-		temp = templates.find_one({"templateName" : eventType})
-	except Exception as e:
-		client.close()
-		return jsonify(response=e, msg="failure to find template."), 500
+        # find template.
+    try:
+        temp = templates.find_one({"templateName" : eventType})
+    except Exception as e:
+        client.close()
+        return jsonify(response=e, msg="failure to find template."), 500
 
-		# find list of questions from template.
-	try:
-		ques = list(questions.find({"questionID" : {"$in": temp["questionID"]}}, {"questionID" : 1, "question" : 1, "_id" : 0, "outputType" : 1, "responseType" : 1}))
-	except Exception as e:
-		return jsonify(response=e, msg="failure to find list of questions."), 500
-
-
-	returnArray = []
-	for record in ques:
-		returnArray.append(record)
+        # find list of questions from template.
+    try:
+        ques = list(questions.find({"questionID" : {"$in": temp["questionID"]}}, {"questionID" : 1, "question" : 1, "_id" : 0, "outputType" : 1, "responseType" : 1}))
+    except Exception as e:
+        return jsonify(response=e, msg="failure to find list of questions."), 500
 
 
-	client.close()
+    returnArray = []
+    for record in ques:
+        returnArray.append(record)
 
-	return jsonify(response=returnArray), 200
+
+    client.close()
+
+    return jsonify(response=returnArray), 200
 
 def modelInit():
-	global modelInit
+    global modelInit
 
-	tars = TARSClassifier.load("final-model2.pt")
-	tars.switch_to_task("EMOTIONS_CS261")
-	def inner():
-		return tars
+    tars = TARSClassifier.load("final-model2.pt")
+    tars.switch_to_task("EMOTIONS_CS261")
+    def inner():
+        return tars
 
-	modelInit = inner
+    modelInit = inner
 
-	return tars
+    return tars
 
 
 

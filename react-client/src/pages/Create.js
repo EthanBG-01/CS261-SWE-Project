@@ -167,6 +167,15 @@ const Create = () => {
     const [questions, setQuestions] = useState([]);
     const [tempquestions, setTempQuestions] = useState([]);
 
+    const refreshToken = async () => {
+        try {
+            const result = await axios.get('http://localhost/user/refresh',{headers:{"Authorization": `Bearer ${user.refresh}`}});
+            return result.data.access_token;
+        } catch (e) {
+            return undefined;
+        }
+    }
+
     useEffect(() => {
         const getQuestions = async () => {
             await fetchTemplate();
@@ -177,10 +186,7 @@ const Create = () => {
         //      history.push("/login");
         // }
 
-        // Fetch the default template questions:
         getQuestions();
-
-
     }, []);
 
     const fetchTemplate2 = async (value) => {
@@ -189,14 +195,13 @@ const Create = () => {
             setQuestions(result.data.response);
             setTempQuestions(result.data.response);
         } catch (e) {
-            // Unauthorised due to expired token
-            // if (e.response.status === 401 && e.response.data.msg === "Token has expired") {
-            //     const newToken = await refreshToken();
-            //     if (newToken !== undefined){
-            //         let userObject = {...user, access: newToken};
-            //         setUser(userObject,() => {fetchTemplate()});
-                // }
-            console.log(e.response);
+            if (e.response.status === 401 && e.response.data.msg === "Token has expired") {
+                const newToken = await refreshToken();
+                if (newToken !== undefined){
+                    let userObject = {...user, access: newToken};
+                    setUser(userObject,() => {fetchTemplate2()});
+                }
+            }
         }
     }
 
@@ -206,36 +211,15 @@ const Create = () => {
             setQuestions(result.data.response);
             setTempQuestions(result.data.response);
         } catch (e) {
-            // Unauthorised due to expired token
-            // if (e.response.status === 401 && e.response.data.msg === "Token has expired") {
-            //     const newToken = await refreshToken();
-            //     if (newToken !== undefined){
-            //         let userObject = {...user, access: newToken};
-            //         setUser(userObject,() => {fetchTemplate()});
-                // }
-            console.log(e.response);
+            if (e.response.status === 401 && e.response.data.msg === "Token has expired") {
+                const newToken = await refreshToken();
+                if (newToken !== undefined){
+                    let userObject = {...user, access: newToken};
+                    setUser(userObject,() => {fetchTemplate()});
+                }
+            }
         }
     }
-
-    // useEffect(() => {
-    //     console.log("yeet")
-    //     // if (user.login === false){
-    //     //     history.push("/login");
-    //     // }
-
-    //     // if (user === undefined || user.login === false){
-    //     //     history.push("/login");
-    //     //     return;
-    //     //   }
-    
-    //     //   const asyncFetchTemplate = async () => {
-    //     //       const status = await fetchTemplate();
-    //     //   }
-    
-    //       // Fetch events that the user owns:
-    //     fetchTemplate();
-
-    // }, []);
 
     const createEvent = async () => {
         let errorFlag = false;
@@ -325,6 +309,12 @@ const Create = () => {
                 }
                 const result2 = await axios.post('http://localhost/feedback/post-create-event', questionDetails);
                 console.log(result2);
+
+
+                this.timeoutHandle = setTimeout(()=>{
+                    history.push("/");
+                }, 5000);
+
             } catch (e){
                 console.log(e.response);
             }

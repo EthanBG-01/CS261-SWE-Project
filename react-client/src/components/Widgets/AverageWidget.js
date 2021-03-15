@@ -3,11 +3,11 @@ import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
 
 import "../../styles/Dashboard.css";
 
-export function AverageWidget({title, average}) {
+export function AverageWidget({title, average, leftLabel, rightLabel}) {
 
     const val = [
-        { name: 'Average Responses', value: average.Average+5 },
-        { name: '', value: 10-average.Average+5 },
+        { name: 'Average Responses', value: average.Average },
+        { name: '', value: 10-average.Average },
     ];
 
     const COLORS = ['#295e86', '#ffffff'];
@@ -17,12 +17,13 @@ export function AverageWidget({title, average}) {
             <div className="innerWidget">
                 <h1>{title}</h1>
                 <div className="averageVal">
-                    <h1>{average.Average}</h1>
-                    <PieChart width={300} height={200} className="pieChart">
+                    <PieChart width={300} height={120} className="pieChart">
                         <Pie
                             data={val}
                             startAngle={180}
                             endAngle={0}
+                            cx={150}
+                            cy={120}
                             innerRadius={80}
                             outerRadius={110}
                             fill="#8884d8"
@@ -33,8 +34,10 @@ export function AverageWidget({title, average}) {
                             ))}
                         </Pie>
                     </PieChart>
-                    <p>-5</p>
-                    <p>5</p>
+                    <div style={{display:"flex", justifyContent:"space-between"}}>
+                        <p className="labelLeft">1</p>
+                        <p className="labelRight">10</p>
+                    </div>
                 </div>
 
             </div>

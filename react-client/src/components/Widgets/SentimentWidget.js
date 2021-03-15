@@ -8,7 +8,6 @@ export function SentimentWidget({title, emotions, responses}) {
         data.push({Categories: emotion, Totals: emotions[emotion]});
     }
 
-
     return (
         <div className="widget">
             <h1>{title}</h1>

@@ -22,7 +22,7 @@ const Header = ({ title, color, text, name, button, welcome, onClick ,saved }) =
 
             {/* <h4>Welcome back Host Name</h4>  try para*/}
             {saved ? (
-                <h4>Event has been saved, Proceed to Main page through navigation bar</h4>
+                <h4>Event has been saved.</h4>
             ) : (
                 <>
                 {
