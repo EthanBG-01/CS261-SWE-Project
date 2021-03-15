@@ -48,6 +48,7 @@
 .pieChart{
     border:solid #efefef 1px;
     margin:auto;
+    margin-top:32px;
 }
 
 .averageVal h1{
@@ -147,4 +148,12 @@
 
 .responses{
     margin-top:16px;
+}
+
+.labelLeft{
+    padding-left: 48px;
+}
+
+.labelRight{
+    padding-right: 60px;
 }
