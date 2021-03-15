@@ -2,6 +2,8 @@ import { Slider, Typography, Radio, RadioGroup, FormControlLabel, FormControl, T
 // import PropTypes from 'prop-types'
 import Button from './Button'
 
+import "../styles/questions.css";
+
 const Question = ( {ques, num, def, onChanges, updateGlobal, deleteRadio, 
                     addRadio, updateSelect, updateText, updateQuestion, 
                     deleteQuestion, ...props} ) => {

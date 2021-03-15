@@ -4,7 +4,7 @@ import { Link, useHistory } from 'react-router-dom'
 
 import "../styles/Header.css";
 
-const Header = ({ title, color, text, name, button, onClick ,saved }) => {
+const Header = ({ title, color, text, name, button, welcome, onClick ,saved }) => {
     const history = useHistory()
     // clickFunc = () => {history.push("/create")}
     
@@ -12,7 +12,9 @@ const Header = ({ title, color, text, name, button, onClick ,saved }) => {
     return (
         <header className='header'>
             <div>
-                <p>Welcome Back, {name}.</p>
+                {
+                    welcome ? <p>Welcome Back, {name}.</p> : <></>
+                }
                 <h2>{title}</h2>
             </div>
 

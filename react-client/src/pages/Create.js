@@ -348,7 +348,7 @@ const Create = () => {
 
     return (
         <div className="Main">
-            <Header title='Create Events' color='blue' text='Save Event' name={user.name} onClick={createEvent} saved={eventSaved}/>
+            <Header title='Create Events' welcome={false} color='blue' text='Save Event' name={user.name} onClick={createEvent} saved={eventSaved}/>
             {/* {eventSaved ? (
                 <Header title='Create Events' color='blue' text='Save Event' name={user.name} onClick={createEvent} saved={eventSaved}/>
             ) : (
@@ -467,15 +467,16 @@ const Create = () => {
                                 /> */}
                             <>
                                 {type === "workshop" ? (
-                                    <Button color="green" text="Add"  onClick={addDate}/>
+                                    <Button styleClass="workshopAdd" color="green" text="Add"  onClick={addDate}/>
                                 ): null}
                             </>
                         </div>
 
-                    <div>
-                        <h3>Use Default Question</h3>
+                    <div className="useDefault">
+                        <h3>Use Default Questions</h3>
                         <input type="checkbox" checked={defquestion} value={defquestion} onChange={e=> setDefQuestion(e.currentTarget.checked)} />
                     </div>
+
                 </div>
                 <div className='questionBody'>
                     {/* {questions.map((question,index) => (

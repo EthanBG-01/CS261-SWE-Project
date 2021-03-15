@@ -15,8 +15,8 @@ export function SentimentWidget({title, emotions, responses}) {
 
             <div>
                 <BarChart
-                    width={500}
-                    height={400}
+                    width={350}
+                    height={240}
                     data={data}
                     margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
                 >
@@ -30,7 +30,6 @@ export function SentimentWidget({title, emotions, responses}) {
                 </BarChart>
             </div>
 
-
             {responses.questionText.map((item, i) => {
                 return (
                     <div className={"nameObject"}>
@@ -39,6 +38,7 @@ export function SentimentWidget({title, emotions, responses}) {
                     </div>
                 )
             })}
+
         </div>
     );
 

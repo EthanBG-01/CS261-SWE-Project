@@ -75,7 +75,7 @@ function Main() {
   
   return (
     <div className="Main">
-      <Header className="header" title='Your Events' color='pink' text='Create Event' name={user.name} onClick={createEvent} />
+      <Header className="header" welcome={true} title='Your Events' color='pink' text='Create Event' name={user.name} onClick={createEvent} />
       <div className="listTitlePadding">
           <div className="listTitle">
               <div className='box'>

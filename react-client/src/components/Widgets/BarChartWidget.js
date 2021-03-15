@@ -13,12 +13,12 @@ export function BarChartWidget({title, dataPairs}) {
             <h1>{title}</h1>
 
             <BarChart
-                width={500}
-                height={400}
+                width={350}
+                height={240}
                 data={arr}
                 margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
             >
-                <XAxis dataKey="Categories">
+                <XAxis dataKey="Categories" >
                     <Label value={"Categories"} offset={-10} position="insideBottom" />
                 </XAxis>
                 <Tooltip />

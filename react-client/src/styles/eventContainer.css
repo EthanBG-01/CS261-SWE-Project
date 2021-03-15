@@ -48,7 +48,7 @@
 }
 
 .feedbackButton {
-    background-color: #11557C;
+    background-image: linear-gradient(to bottom right, #2F5A72 0%, #0F2F4A 100%);
     color:white;
     border:0px;
     padding:10px;

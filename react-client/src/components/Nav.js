@@ -27,9 +27,6 @@ const Nav = () => {
         <nav>
             <h3>RT-Feedback</h3>
             <ul className="nav-links">
-                <Link style={navStyle} to='/dashboard'>
-                    <li>Dashboard</li>
-                </Link>
                 <Link style={navStyle} to='/'>
                     <li>Main</li>
                 </Link>

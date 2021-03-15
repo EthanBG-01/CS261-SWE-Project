@@ -14,7 +14,7 @@ templates = db.templates
 
 questions.insertMany([{'questionID' : 1, 'question' : 'How satisfied are you with the session so far?', 'outputType' : 'average', 'questionType' : 'template', 'responseType' : ["Unsatisfied","Very Satisfied"], 'templateID' : [1]},
 
-{'questionID' : 2, 'question' : 'Are the topics covered interesting?', 'outputType' : 'discrete', 'questionType' : 'template', 'responseType' : ["yes", "no", "not interesting", "somewhat not interesting", "meh", "somewhat interesting", "interesting"], 'templateID' : [1]},
+{'questionID' : 2, 'question' : 'Are the topics covered interesting?', 'outputType' : 'discrete', 'questionType' : 'template', 'responseType' : ["not interesting","somewhat interesting", "interesting"], 'templateID' : [1]},
 
 {'questionID' : 3, 'question' : 'Is the session delivered in an engaging way?', 'outputType' : 'average', 'questionType' : 'template', 'responseType' : ["Not Engaging","Very Engaging"], 'templateID' : [1]},
 

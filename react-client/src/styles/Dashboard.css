@@ -18,33 +18,32 @@
 
 .widgetContainer {
     display:flex;
+    justify-content: space-between;
     flex-direction: row;
     flex-wrap: wrap;
-}
-
-.innerWidget{
-    width:100%;
-    height:100%;
-    padding:30px;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
 }
 
 .widget {
     margin:8px;
     border:none;
+    width:360px;
+    height:300px;
     border-radius: 8px;
     background-color: white;
     -webkit-box-shadow: 5px 5px 5px -2px #acacac;
     box-shadow: 5px 5px 5px -2px #dbdbdb;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    padding: 12px;
 }
 
-.innerWidget h1 {
-    font-weight: 500;
-    font-size: 24px;
+.widget h1{
     font-family: Titillium Web;
+    font-weight: 600;
+    font-size: 18px;
 }
+
 
 .pieChart{
     border:solid #efefef 1px;
@@ -53,4 +52,99 @@
 
 .averageVal h1{
     color: red;
+}
+
+
+.moodContainer{
+    background-color: white;
+    border-radius: 8px;
+    text-align: center;
+    padding: 8px;
+}
+
+.moodContainer img {
+    width:50px;
+    height:50px;
+}
+
+.topDets{
+    display: flex;
+}
+
+.eventDetails{
+    background-color: white;
+    border-radius: 8px;
+    padding:8px;
+}
+
+.veryBad{
+    border-top: solid #8f2d2d 12px;
+}
+
+
+
+.headerItems{
+    display:flex;
+}
+
+.header {
+    font-family: Titillium Web;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 20vh;
+    color:white;
+    background: rgb(36,82,149);
+    background: linear-gradient(62deg, rgba(36,82,149,.5) 0%, rgba(1,43,80,.5) 0%), url("../assets/building.jpg");
+    background-position: 0px -600px;
+    background-size: cover;
+}
+
+.header h2{
+    font-size: 42px;
+}
+
+.header p{
+    font-size:20px;
+}
+
+.create:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.create{
+    background-image: linear-gradient(to bottom right, #f3f3f3 0%, #f1f1f1 100%);
+    font-family: Titillium Web;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.headerItems{
+    display:flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+.nameOfUser{
+    flex:1;
+    border-right: solid 2px #eaeaea;
+    text-align: left;
+    padding-left: 24px;
+}
+
+.responseOfUser{
+    flex:3;
+    text-align: left;
+    padding-left: 8px;
+}
+
+.nameObject{
+    display:flex;
+    align-items: center;
+}
+
+.responses{
+    margin-top:16px;
 }

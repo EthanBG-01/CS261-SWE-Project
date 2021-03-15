@@ -17,7 +17,7 @@ const Event = ({ event }) => {
 
     const handle = () =>{
         console.log("handling click", eventID);
-        setEvents({...events, activeEvent: eventID});
+        setEvents({...events, activeEvent: eventID, details:event});
         history.push("/dashboard");
     }
 
@@ -36,7 +36,7 @@ const Event = ({ event }) => {
                 <h5 float='left'>{event.startDate}, {event.startTime}</h5>
             </div>
             <div className='btnbox'>
-                <Button styleClass={"editButton"} text='Edit' />
+
                 <Button styleClass={"feedbackButton"} text={event.live === true ? "Live Feedback" : "View Feedback"} onClick={handle} />
             </div>
         </div>
